@@ -1,0 +1,7 @@
+{application, of_config,
+ [{description, "OF-Config 1.1 Library for Erlang"},
+  {vsn, "0.1"},
+  {applications, [kernel,
+                  stdlib,
+                  xmerl]}
+ ]}.

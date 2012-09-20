@@ -3,7 +3,6 @@
 /ebin/
 /.eunit/
 /deps/
-/priv/
 /doc/*
 !/doc/overview.edoc
 *.o

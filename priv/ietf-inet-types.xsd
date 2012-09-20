@@ -160,10 +160,10 @@
         <xs:restriction base="inet:ipv4-address">
         </xs:restriction>
       </xs:simpleType>
-      <xs:simpleType>
-        <xs:restriction base="inet:ipv6-address">
-        </xs:restriction>
-      </xs:simpleType>
+      <!-- <xs:simpleType> -->
+      <!--   <xs:restriction base="inet:ipv6-address"> -->
+      <!--   </xs:restriction> -->
+      <!-- </xs:simpleType> -->
     </xs:union>
   </xs:simpleType>
 
@@ -236,10 +236,10 @@
         <xs:restriction base="inet:ipv4-prefix">
         </xs:restriction>
       </xs:simpleType>
-      <xs:simpleType>
-        <xs:restriction base="inet:ipv6-prefix">
-        </xs:restriction>
-      </xs:simpleType>
+      <!-- <xs:simpleType> -->
+      <!--   <xs:restriction base="inet:ipv6-prefix"> -->
+      <!--   </xs:restriction> -->
+      <!-- </xs:simpleType> -->
     </xs:union>
   </xs:simpleType>
 
@@ -358,10 +358,10 @@
         <xs:restriction base="inet:ip-address">
         </xs:restriction>
       </xs:simpleType>
-      <xs:simpleType>
-        <xs:restriction base="inet:domain-name">
-        </xs:restriction>
-      </xs:simpleType>
+      <!-- <xs:simpleType> -->
+      <!--   <xs:restriction base="inet:domain-name"> -->
+      <!--   </xs:restriction> -->
+      <!-- </xs:simpleType> -->
     </xs:union>
   </xs:simpleType>
 

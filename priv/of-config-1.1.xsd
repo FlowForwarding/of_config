@@ -644,7 +644,7 @@
         </xs:complexContent>
     </xs:complexType>
     <xs:simpleType name="OFX509CertificateType">
-        <xs:restriction base="base64Binary"/>
+        <xs:restriction base="xs:base64Binary"/>
     </xs:simpleType>
     <xs:complexType name="OFFlowTableType">
         <xs:complexContent>

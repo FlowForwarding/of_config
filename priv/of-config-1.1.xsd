@@ -651,7 +651,7 @@
                     <xs:element name="max-entries" type="xs:integer"/>
                     <xs:element name="next-tables" type="OFNextFlowTables"/>
                     <xs:element name="instructions" type="OFFlowTableInstructions"/>
-                    <xs:element name="matches" type="OFFlowTableMatches"/>
+                    <xs:element name="matches" type="OFFlowTableMatchFields"/>
                     <xs:element name="write-actions" type="OFFlowTableWriteActions"/>
                     <xs:element name="apply-actions" type="OFFlowTableApplyActions"/>
                     <xs:element name="write-setfields" type="OFFlowTableMatchFields"/>

@@ -161,7 +161,7 @@
   <element name="MgmtData" type="string"/>
 
   <element name="KeyValue" type="ds:KeyValueType"/> 
-  <complexType name="KeyValueType" mixed="true">
+  <complexType name="KeyValueType" mixed="false">
    <choice>
      <element ref="ds:DSAKeyValue"/>
      <element ref="ds:RSAKeyValue"/>

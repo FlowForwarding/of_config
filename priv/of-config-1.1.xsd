@@ -638,8 +638,7 @@
             <xs:extension base="OFResourceType">
                 <xs:sequence maxOccurs="1" minOccurs="1">
                     <xs:element name="certificate" type="OFX509CertificateType"/>
-                    <!-- <xs:element name="private-key" type="ds:KeyValueType"/> -->
-                    <xs:element name="private-key" type="xs:string"/>
+                    <xs:element name="private-key" type="ds:KeyValueType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

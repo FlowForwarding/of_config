@@ -666,27 +666,27 @@
         </xs:complexContent>
     </xs:complexType>
     <xs:complexType name="OFNextFlowTables">
-        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:sequence minOccurs="1" maxOccurs="10">
             <xs:element name="table-id" type="OFConfigID"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="OFFlowTableInstructions">
-        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:sequence minOccurs="1" maxOccurs="10">
             <xs:element name="type" type="OFInstructionType"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="OFFlowTableMatchFields">
-        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:sequence minOccurs="1" maxOccurs="10">
             <xs:element name="type" type="OFMatchFieldType"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="OFFlowTableWriteActions">
-        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:sequence minOccurs="1" maxOccurs="10">
             <xs:element name="type" type="OFActionType"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="OFFlowTableApplyActions">
-        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:sequence minOccurs="1" maxOccurs="10">
             <xs:element name="type" type="OFActionType"/>
         </xs:sequence>
     </xs:complexType>

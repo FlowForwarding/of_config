@@ -16,32 +16,34 @@
 
 %% @author Erlang Solutions Ltd. <openflow@erlang-solutions.com>
 %% @author Konrad Kaplita <konrad.kaplita@erlang-solutions.com>
-%% @author Krzysztof Rutka <krzysztof.rutka@erlang-solutions.com>
 %% @copyright 2012 FlowForwarding.org
-%% @doc Module for parsing and encoding OF-Config 1.1 XML configurations.
--module(of_config).
+%% @doc eUnit suite for testing OF-Config protocol.
+%% @private
+-module(of_config_tests).
 
-%% API
--export([parse/1,
-         encode/1]).
+-include_lib("eunit/include/eunit.hrl").
 
--include("of_config.hrl").
+%% Tests -----------------------------------------------------------------------
 
-%%------------------------------------------------------------------------------
-%% API functions
-%%------------------------------------------------------------------------------
+ssh_test_() ->
+    {setup,
+     fun setup/0,
+     fun teardown/1,
+     [{"Parsing OF-Config 1.1 XML", fun parse/0}]}.
 
--spec parse(xmerl_scan:xmlElement()) -> ok.
-parse(XML) ->
-    {ok, Schema} = xmerl_xsd:process_schema(filename:join([code:priv_dir(of_config),
-                                                           "of-config-1.1.xsd"])),
-    case xmerl_xsd:validate(XML, Schema) of
-        {error, _E} ->
-            false;
-        {_ValidElement, _GLobalState} ->
-            true
-    end.
+parse() ->
+    {XML, _Rest} = xmerl_scan:file("../test/full-config-example.xml"),
+    Res = of_config:parse(XML),
+    ?assertEqual(true, Res).
 
--spec encode(ok) -> xmerl_scan:xmlElement().
-encode(_Config) ->
-    xml.
+%% Fixtures --------------------------------------------------------------------
+
+setup() ->
+    error_logger:tty(false),
+    application:load(of_config),
+    application:start(xmerl),
+    application:start(of_config).
+
+teardown(_) ->
+    application:stop(of_config),
+    application:stop(xmerl).

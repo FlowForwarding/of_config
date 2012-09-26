@@ -18,7 +18,7 @@
 %% @author Krzysztof Rutka <krzysztof.rutka@erlang-solutions.com>
 %% @copyright 2012 FlowForwarding.org
 
--type id() :: binary().
+-type id() :: string().
 -type ip_address() :: binary().
 
 %% 7.12 OpenFlow Flow Table ----------------------------------------------------
@@ -80,11 +80,29 @@
 -type certificate_type() :: external
                           | owned.
 
+-record(private_key_rsa, {
+          modulus :: string(),
+          exponent :: string()
+         }).
+
+-record(private_key_dsa, {
+          p :: string(),
+          q :: string(),
+          g :: string(),
+          y :: string(),
+          j :: string(),
+          seed :: string(),
+          pgen_counter :: string()
+         }).
+
+-type private_key() :: #private_key_rsa{}
+                     | #private_key_dsa{}.
+
 -record(certificate, {
           resource_id :: id(),
           type :: certificate_type(),
           certificate :: binary(),
-          private_key :: binary() | undefined
+          private_key :: private_key() | undefined
          }).
 
 %% 7.8 OpenFlow Port Feature ---------------------------------------------------
@@ -108,7 +126,7 @@
                | symmetric
                | asymmetric.
 
--record(feature, {
+-record(features, {
           rate :: rate(),
           auto_negotiate = true :: boolean(),
           medium :: medium(),
@@ -134,10 +152,10 @@
          }).
 
 -record(port_features, {
-          current :: #feature{},
-          advertised :: #feature{},
-          supported :: #feature{},
-          advertised_peer :: #feature{}
+          current :: #features{},
+          advertised :: #features{},
+          supported :: #features{},
+          advertised_peer :: #features{}
          }).
 
 -record(ip_in_gre_tunnel, {
@@ -182,13 +200,19 @@
 
 %% 7.9 OpenFlow Queue ----------------------------------------------------------
 
+-record(queue_properties, {
+          min_rate :: integer(),
+          max_rate :: integer(),
+          experimenters = [] :: [integer()]
+         }).
+-type queue_properties() :: #queue_properties{}.
+
+
 -record(queue, {
           resource_id :: id(),
           id :: id(),
           port :: id(),
-          min_rate :: integer(),
-          max_rate :: integer(),
-          experimenters = [] :: [integer()]
+          properties :: queue_properties()
          }).
 
 %% 7.5 OpenFlow Controller -----------------------------------------------------
@@ -266,7 +290,7 @@
                           | write_metadata
                           | goto_table.
 
--record(capability, {
+-record(capabilities, {
           max_buffered_packets :: integer(),
           max_tables :: integer(),
           max_ports :: integer(),
@@ -281,7 +305,7 @@
           group_types = [] :: [group_type()],
           group_capabilities = [] :: [group_capability()],
           action_types = [] :: [action_type()],
-          intruction_types = [] :: [instruction_type()]
+          instruction_types = [] :: [instruction_type()]
          }).
 
 %% 7.3 OpenFlow Logical Switch -------------------------------------------------
@@ -291,12 +315,12 @@
 
 -record(logical_switch, {
           id :: id(),
-          capabilities = [] :: [#capability{}],
+          capabilities :: #capabilities{},
           datapath_id :: binary(),
           enabled = true :: boolean(),
           check_controller_certificate = false :: boolean(),
-          lost_connection_behaviour = fail_standalone_mode ::
-            lost_connection_behaviour(),
+          lost_connection_behavior =
+              fail_standalone_mode :: lost_connection_behaviour(),
           controllers = [] :: [#controller{}],
           resources = [] :: [resource()]
          }).
@@ -310,7 +334,7 @@
 
 -record(configuration_point, {
           id :: id(),
-          uri :: binary(),
+          uri :: string(),
           protocol = ssh :: configuration_point_protocol()
          }).
 

@@ -21,11 +21,12 @@
 %% @private
 -module(of_config_tests).
 
+-include_lib("of_config/include/of_config.hrl").
 -include_lib("eunit/include/eunit.hrl").
 
 %% Tests -----------------------------------------------------------------------
 
-ssh_test_() ->
+parse_test_() ->
     {setup,
      fun setup/0,
      fun teardown/1,
@@ -34,12 +35,13 @@ ssh_test_() ->
 parse() ->
     {XML, _Rest} = xmerl_scan:file("../test/full-config-example.xml"),
     Res = of_config:parse(XML),
-    ?assertEqual(true, Res).
+    ?assertEqual(true, is_record(Res, capable_switch)).
 
 %% Fixtures --------------------------------------------------------------------
 
 setup() ->
-    error_logger:tty(false),
+    error_logger:tty(true),
+    application:set_env(of_config, of_config_schema, "of-config-1.1.xsd"),
     application:load(of_config),
     application:start(xmerl),
     application:start(of_config).
@@ -47,3 +49,4 @@ setup() ->
 teardown(_) ->
     application:stop(of_config),
     application:stop(xmerl).
+    

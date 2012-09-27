@@ -21,7 +21,7 @@
 %% @private
 -module(of_config_tests).
 
--include_lib("of_config/include/of_config.hrl").
+-include("of_config.hrl").
 -include_lib("eunit/include/eunit.hrl").
 
 %% Tests -----------------------------------------------------------------------

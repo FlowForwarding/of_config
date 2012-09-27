@@ -42,11 +42,19 @@ parse() ->
 setup() ->
     error_logger:tty(true),
     application:set_env(of_config, of_config_schema, "of-config-1.1.xsd"),
+
+    %% HACK: Rebar is not preserving the directory structure and copies
+    %%       everything to .eunit, so this symlink makes code:priv_dir/1
+    %%       and include_lib work again.
+    file:make_symlink("..", "of_config"),
+    code:add_path("./of_config/ebin"),
+    
     application:load(of_config),
     application:start(xmerl),
     application:start(of_config).
 
 teardown(_) ->
     application:stop(of_config),
-    application:stop(xmerl).
+    application:stop(xmerl),
+    file:delete("of_config").
     

@@ -19,7 +19,7 @@
 %% @copyright 2012 FlowForwarding.org
 
 -type id() :: string().
--type ip_address() :: binary().
+-type ip_address() :: string().
 
 %% 7.12 OpenFlow Flow Table ----------------------------------------------------
 
@@ -68,8 +68,8 @@
           matches = [] :: [match_field_type()],
           write_actions = [] :: [action_type()],
           apply_actions = [] :: [action_type()],
-          write_setfield = [] :: [match_field_type()],
-          apply_setfield = [] :: [match_field_type()],
+          write_setfields = [] :: [match_field_type()],
+          apply_setfields = [] :: [match_field_type()],
           wildcards = [] :: [match_field_type()],
           metadata_match :: binary(),
           metadata_write :: binary()

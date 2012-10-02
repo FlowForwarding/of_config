@@ -22,20 +22,37 @@
 -module(of_config_tests).
 
 -include("of_config.hrl").
+-include_lib("xmerl/include/xmerl.hrl").
 -include_lib("eunit/include/eunit.hrl").
 
 %% Tests -----------------------------------------------------------------------
 
-parse_test_() ->
+parser_test_() ->
     {setup,
      fun setup/0,
      fun teardown/1,
-     [{"Parsing OF-Config 1.1 XML", fun parse/0}]}.
+     [{"Decoding OF-Config 1.1 in Xmerl record representation "
+       "to internal record representation",
+       fun decode/0},
+      {"Encoding internal record representation to Xmerl simple form",
+       fun encode/0}]}.
 
-parse() ->
+decode() ->
     {XML, _Rest} = xmerl_scan:file("../test/full-config-example.xml"),
-    Res = of_config:parse(XML),
+    Res = of_config:decode(XML),
     ?assertEqual(true, is_record(Res, capable_switch)).
+
+encode() ->
+    {XML1, _Rest} = xmerl_scan:file("../test/full-config-example.xml"),
+    CapableSwitchRecord1 = of_config:decode(XML1),
+    ?assertEqual(true, is_record(CapableSwitchRecord1, capable_switch)),
+
+    XMLString = of_config:encode(CapableSwitchRecord1),
+    {XML2, _Rest} = xmerl_scan:string(XMLString),
+    CapableSwitchRecord2 = of_config:decode(XML2),
+    ?assertEqual(true, is_record(CapableSwitchRecord2, capable_switch)),
+
+    ?assertEqual(CapableSwitchRecord1, CapableSwitchRecord2).
 
 %% Fixtures --------------------------------------------------------------------
 

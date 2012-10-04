@@ -412,13 +412,13 @@
         <xs:sequence>
             <xs:choice>
                 <xs:sequence>
-                    <xs:element name="local-endpoint-ipv4-adress" type="inet:ipv4-address">
+                    <xs:element name="local-endpoint-ipv4-address" type="inet:ipv4-address">
                         <xs:annotation>
                             <xs:documentation> The IPv4 address of the local tunnel endpoint.
                             </xs:documentation>
                         </xs:annotation>
                     </xs:element>
-                    <xs:element name="remote-endpoint-ipv4-adress" type="inet:ipv4-address">
+                    <xs:element name="remote-endpoint-ipv4-address" type="inet:ipv4-address">
                         <xs:annotation>
                             <xs:documentation> The IPv4 address of the remote tunnel endpoint.
                             </xs:documentation>
@@ -426,13 +426,13 @@
                     </xs:element>
                 </xs:sequence>
                 <xs:sequence>
-                    <xs:element name="local-endpoint-ipv6-adress" type="inet:ipv6-address">
+                    <xs:element name="local-endpoint-ipv6-address" type="inet:ipv6-address">
                         <xs:annotation>
                             <xs:documentation> The IPv6 address of the local tunnel endpoint.
                             </xs:documentation>
                         </xs:annotation>
                     </xs:element>
-                    <xs:element name="remote-endpoint-ipv6-adress" type="inet:ipv6-address">
+                    <xs:element name="remote-endpoint-ipv6-address" type="inet:ipv6-address">
                         <xs:annotation>
                             <xs:documentation> The IPv6 address of the remote tunnel endpoint.
                             </xs:documentation>
@@ -547,7 +547,7 @@
                         &lt;get-config&gt; requests. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="port">
+            <xs:element name="port" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> Reference to port resources in the Capable Switch. This
                         element associates an OpenFlow Queue with an OpenFlow Port. If the OpenFlow
@@ -561,7 +561,7 @@
                     <xs:restriction base="inet:uri"> </xs:restriction>
                 </xs:simpleType>
             </xs:element>
-            <xs:element name="properties">
+            <xs:element name="properties" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The queue properties currently configured.
                     </xs:documentation>
@@ -694,7 +694,7 @@
                         exist, a 'data-missing' error is returned. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="protocol" type="OFConfigurationPointProtocolType">
+            <xs:element name="protocol" type="OFConfigurationPointProtocolType" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The transport protocol that the Configuration Point uses when
                         communicating via NETCONF with the OpenFlow Capable Switch. This element is
@@ -738,13 +738,13 @@
         </xs:annotation>
         <xs:sequence>
             <xs:group ref="OFResourceType"/>
-            <xs:element name="max-entries" type="xs:unsignedByte">
+            <xs:element name="max-entries" type="xs:unsignedByte" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The maximum number of flow entries supported by the flow
                         table. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="next-tables">
+            <xs:element name="next-tables" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> An array of resource-ids of all flow tables that can be
                         directly reached from this table using the 'goto-table' instruction.
@@ -752,103 +752,95 @@
                 </xs:annotation>
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="table-id" minOccurs="0" maxOccurs="unbounded"
-                            type="inet:uri"/>
+                        <xs:element name="table-id" maxOccurs="unbounded" type="inet:uri"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="instructions">
+            <xs:element name="instructions" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The list of all instruction types supported by the flow
                         table. </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="type" minOccurs="0" maxOccurs="unbounded"
-                            type="OFInstructionType"/>
+                        <xs:element name="type" maxOccurs="unbounded" type="OFInstructionType"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="matches">
+            <xs:element name="matches" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The list of all match types supported by the flow table.
                     </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="type" minOccurs="0" maxOccurs="unbounded"
-                            type="OFMatchFieldType"/>
+                        <xs:element name="type" maxOccurs="unbounded" type="OFMatchFieldType"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="write-actions">
+            <xs:element name="write-actions" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The list of all write action types supported by the flow
                         table. </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="type" minOccurs="0" maxOccurs="unbounded"
-                            type="OFActionType"/>
+                        <xs:element name="type" maxOccurs="unbounded" type="OFActionType"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="apply-actions">
+            <xs:element name="apply-actions" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The list of all apply action types supported by the flow
                         table. </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="type" minOccurs="0" maxOccurs="unbounded"
-                            type="OFActionType"/>
+                        <xs:element name="type" maxOccurs="unbounded" type="OFActionType"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="write-setfields">
+            <xs:element name="write-setfields" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The list of all 'set-field' action types supported by the
                         table using write actions. </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="type" minOccurs="0" maxOccurs="unbounded"
-                            type="OFMatchFieldType"/>
+                        <xs:element name="type" maxOccurs="unbounded" type="OFMatchFieldType"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="apply-setfields">
+            <xs:element name="apply-setfields" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The list of all 'set-field' action types supported by the
                         table using apply actions. </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="type" minOccurs="0" maxOccurs="unbounded"
-                            type="OFMatchFieldType"/>
+                        <xs:element name="type" maxOccurs="unbounded" type="OFMatchFieldType"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="wildcards">
+            <xs:element name="wildcards" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The list of all fields for which the table supports
                         wildcarding. </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="type" minOccurs="0" maxOccurs="unbounded"
-                            type="OFMatchFieldType"/>
+                        <xs:element name="type" maxOccurs="unbounded" type="OFMatchFieldType"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="metadata-match" type="hex-binary">
+            <xs:element name="metadata-match" type="hex-binary" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element indicates the bits of the metadata field on
                         which the flow table can match. It is represented as 64-bit integer in
                         hexadecimal digits([0-9a-fA-F]) format. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="metadata-write" type="hex-binary">
+            <xs:element name="metadata-write" type="hex-binary" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element indicates the bits of the metadata field on
                         which flow table can write using the 'write-metadata' instruction. It is
@@ -881,7 +873,7 @@
                         be present to identify the OpenFlow Logical Switch. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="capabilities">
+            <xs:element name="capabilities" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element contains all capability items that an OpenFlow
                         Logical Switch MAY implement. This element and its children can only be
@@ -909,7 +901,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="enabled" type="xs:boolean">
+            <xs:element name="enabled" type="xs:boolean" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element indicates the administrative state of the
                         OpenFlow Logical Switch. A value of 'false' means the OpenFlow Logical
@@ -919,7 +911,7 @@
                         this element is not present it defaults to 'false'. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="check-controller-certificate" type="xs:boolean">
+            <xs:element name="check-controller-certificate" type="xs:boolean" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element indicates the behavior of the OpenFlow Logical
                         Switch when connecting to an OpenFlow Controller. If set to value 'false',
@@ -941,7 +933,7 @@
                         'false'. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="lost-connection-behavior">
+            <xs:element name="lost-connection-behavior" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element indicates the the behavior of the OpenFlow
                         Logical Switch in case it loses contact with all OpenFlow Controllers. There
@@ -958,7 +950,7 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
-            <xs:element name="controllers">
+            <xs:element name="controllers" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The list of controllers for this Logical switch. The element
                         'id' of OFControllerType MUST be unique within this list.
@@ -966,7 +958,7 @@
                 </xs:annotation>
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="controller" minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="controller" maxOccurs="unbounded">
                             <xs:annotation>
                                 <xs:documentation> The list of OpenFlow Controllers that are
                                     assigned to the OpenFlow Logical Switch. The switch MUST NOT
@@ -995,7 +987,7 @@
                     <xs:field xpath="of11-config:id"/>
                 </xs:key>
             </xs:element>
-            <xs:element name="resources">
+            <xs:element name="resources" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The list of identifiers of all resources of the OpenFlow
                         Capable Switch that the OpenFlow Logical Switch has exclusive or
@@ -1063,7 +1055,6 @@
                         </xs:element>
                         <xs:element name="flow-table" minOccurs="0" maxOccurs="unbounded">
                             <xs:annotation>
-
                                 <xs:documentation> A resource identifier of a flow table of the
                                     OpenFlow Capable Switch that the OpenFlow Logical Switch has
                                     exclusive access to. The elements in this list MUST refer to
@@ -1296,7 +1287,7 @@
         </xs:annotation>
         <xs:sequence>
             <xs:group ref="OFResourceType"/>
-            <xs:element name="number" type="xs:unsignedLong">
+            <xs:element name="number" type="xs:unsignedLong" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This number identifies the OpenFlow Port to OpenFlow
                         Controllers. It is assigned to an OpenFlow Port latest when the OpenFlow
@@ -1314,7 +1305,7 @@
                         &lt;get-config&gt; requests. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="name">
+            <xs:element name="name" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element assists OpenFlow Controllers in identifying
                         OpenFlow Ports. This element is not to be set by the OP-CONFIG protocol, but
@@ -1336,7 +1327,7 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
-            <xs:element name="current-rate" type="xs:unsignedInt">
+            <xs:element name="current-rate" type="xs:unsignedInt" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element indicates the current bit rate of the port. Its
                         values is to be provided in units of kilobit per second (kbps). This element
@@ -1346,7 +1337,7 @@
                         requests. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="max-rate" type="xs:unsignedInt">
+            <xs:element name="max-rate" type="xs:unsignedInt" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element indicates the maximum bit rate of the port. Its
                         values is to be provided in units of kilobit per second (kbps). This element
@@ -1356,7 +1347,7 @@
                         requests. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="configuration">
+            <xs:element name="configuration" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element represents the general adminitrative
                         configuration of the OpenFlow Port. </xs:documentation>
@@ -1397,7 +1388,7 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="state">
+            <xs:element name="state" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element represents the general operational state of the
                         OpenFlow Port. Children of this element are not configurable and can only be
@@ -1433,140 +1424,144 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="features">
-                <xs:complexType>
+            <xs:choice>
+                <xs:element name="features" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="current" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation> The features (rates, duplex, etc.) of the
+                                        port, that are currently in use. Children of this element
+                                        are not configurable and can only be retrieved by NETCONF
+                                        &lt;get&gt; operations. Attemps to modify this element and
+                                        its children with a NETCONF &lt;edit-config&gt; operation
+                                        MUST result in an 'operation-not-supported' error with type
+                                        'application'. </xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:group ref="OFPortCurrentFeatureListType"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="advertised" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation> The features (rates, duplex, etc.) of the
+                                        port, that are advertised to the peer port. NETCONF
+                                        &lt;edit-config&gt; operations MUST be implemented as
+                                        follows: * The 'resource-id' element of OFResoureType MUST
+                                        be present in the path or in the filter at all
+                                        &lt;edit-config&gt; operations to identify the port. * If
+                                        the operation is 'merge' or 'replace', the element is
+                                        created if it does not exist, and its value is set to the
+                                        value found in the XML RPC data. * If the operation is
+                                        'create', the element is created if it does not exist. If
+                                        the element already exists, a 'data‑exists' error is
+                                        returned. * If the operation is 'delete', the element is
+                                        deleted if it exists. If the element does not exist, a
+                                        'data‑missing' error is returned. </xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:group ref="OFPortOtherFeatureListType"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="supported" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation> The features (rates, duplex, etc.) of the
+                                        port, that are supported on the port. Children of this
+                                        element are not configurable and can only be retrieved by
+                                        NETCONF &lt;get&gt; operations. Attemps to modify this
+                                        element and its children with a NETCONF &lt;edit-config&gt;
+                                        operation MUST result in an 'operation-not-supported' error
+                                        with type 'application'. </xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:group ref="OFPortOtherFeatureListType"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="advertised-peer" minOccurs="0">
+                                <xs:annotation>
+                                    <xs:documentation> The features (rates, duplex, etc.) that are
+                                        currently advertised by the peer port. Children of this
+                                        element are not configurable and can only be retrieved by
+                                        NETCONF &lt;get&gt; operations. Attemps to modify this
+                                        element and its children with a NETCONF &lt;edit-config&gt;
+                                        operation MUST result in an 'operation-not-supported' error
+                                        with type 'application'. </xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:group ref="OFPortOtherFeatureListType"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:choice>
+                    <xs:annotation>
+                        <xs:documentation> Tunnels are modeled as logical ports. Elements in this
+                            choice are not configurable and can only be retrieved by NETCONF
+                            &lt;get&gt; operations. Attemps to modify this element and its children
+                            with a NETCONF &lt;edit-config&gt; operation MUST result in an
+                            'operation-not-supported' error with type 'application'. Only elements
+                            from one choice must exist at a time. </xs:documentation>
+                    </xs:annotation>
                     <xs:sequence>
-                        <xs:element name="current" minOccurs="0">
+                        <xs:element name="tunnel">
                             <xs:annotation>
-                                <xs:documentation> The features (rates, duplex, etc.) of the port,
-                                    that are currently in use. Children of this element are not
-                                    configurable and can only be retrieved by NETCONF &lt;get&gt;
-                                    operations. Attemps to modify this element and its children with
-                                    a NETCONF &lt;edit-config&gt; operation MUST result in an
-                                    'operation-not-supported' error with type 'application'.
+                                <xs:documentation> Properties of a basic IP-in-GRE tunnel.
                                 </xs:documentation>
                             </xs:annotation>
                             <xs:complexType>
                                 <xs:sequence>
-                                    <xs:group ref="OFPortCurrentFeatureListType"/>
-                                </xs:sequence>
-                            </xs:complexType>
-                        </xs:element>
-                        <xs:element name="advertised" minOccurs="0">
-                            <xs:annotation>
-                                <xs:documentation> The features (rates, duplex, etc.) of the port,
-                                    that are advertised to the peer port. NETCONF
-                                    &lt;edit-config&gt; operations MUST be implemented as follows: *
-                                    The 'resource-id' element of OFResoureType MUST be present in
-                                    the path or in the filter at all &lt;edit-config&gt; operations
-                                    to identify the port. * If the operation is 'merge' or
-                                    'replace', the element is created if it does not exist, and its
-                                    value is set to the value found in the XML RPC data. * If the
-                                    operation is 'create', the element is created if it does not
-                                    exist. If the element already exists, a 'data‑exists' error is
-                                    returned. * If the operation is 'delete', the element is deleted
-                                    if it exists. If the element does not exist, a 'data‑missing'
-                                    error is returned. </xs:documentation>
-                            </xs:annotation>
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:group ref="OFPortOtherFeatureListType"/>
-                                </xs:sequence>
-                            </xs:complexType>
-                        </xs:element>
-                        <xs:element name="supported" minOccurs="0">
-                            <xs:annotation>
-                                <xs:documentation> The features (rates, duplex, etc.) of the port,
-                                    that are supported on the port. Children of this element are not
-                                    configurable and can only be retrieved by NETCONF &lt;get&gt;
-                                    operations. Attemps to modify this element and its children with
-                                    a NETCONF &lt;edit-config&gt; operation MUST result in an
-                                    'operation-not-supported' error with type 'application'.
-                                </xs:documentation>
-                            </xs:annotation>
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:group ref="OFPortOtherFeatureListType"/>
-                                </xs:sequence>
-                            </xs:complexType>
-                        </xs:element>
-                        <xs:element name="advertised-peer" minOccurs="0">
-                            <xs:annotation>
-                                <xs:documentation> The features (rates, duplex, etc.) that are
-                                    currently advertised by the peer port. Children of this element
-                                    are not configurable and can only be retrieved by NETCONF
-                                    &lt;get&gt; operations. Attemps to modify this element and its
-                                    children with a NETCONF &lt;edit-config&gt; operation MUST
-                                    result in an 'operation-not-supported' error with type
-                                    'application'. </xs:documentation>
-                            </xs:annotation>
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:group ref="OFPortOtherFeatureListType"/>
+                                    <xs:group ref="OFPortBaseTunnelType"/>
                                 </xs:sequence>
                             </xs:complexType>
                         </xs:element>
                     </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:choice>
-                <xs:annotation>
-                    <xs:documentation> Tunnels are modeled as logical ports. Elements in this choice
-                        are not configurable and can only be retrieved by NETCONF &lt;get&gt;
-                        operations. Attemps to modify this element and its children with a NETCONF
-                        &lt;edit-config&gt; operation MUST result in an 'operation-not-supported'
-                        error with type 'application'. Only elements from one choice must exist at a
-                        time. </xs:documentation>
-                </xs:annotation>
-                <xs:sequence>
-                    <xs:element name="tunnel">
-                        <xs:annotation>
-                            <xs:documentation> Properties of a basic IP-in-GRE tunnel.
-                            </xs:documentation>
-                        </xs:annotation>
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:group ref="OFPortBaseTunnelType"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-                </xs:sequence>
-                <xs:sequence>
-                    <xs:element name="ipgre-tunnel">
-                        <xs:annotation>
-                            <xs:documentation> Properties of a IP-in-GRE tunnel. </xs:documentation>
-                        </xs:annotation>
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:group ref="OFPortIPGRETunnelType"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-                </xs:sequence>
-                <xs:sequence>
-                    <xs:element name="vxlan-tunnel">
-                        <xs:annotation>
-                            <xs:documentation> Properties of a VxLAN tunnel. </xs:documentation>
-                        </xs:annotation>
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:group ref="OFPortVXLANTunnelType"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-                </xs:sequence>
-                <xs:sequence>
-                    <xs:element name="nvgre-tunnel">
-                        <xs:annotation>
-                            <xs:documentation> Properties of a NVGRE tunnel. </xs:documentation>
-                        </xs:annotation>
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:group ref="OFPortNVGRETunnelType"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-                </xs:sequence>
+                    <xs:sequence>
+                        <xs:element name="ipgre-tunnel">
+                            <xs:annotation>
+                                <xs:documentation> Properties of a IP-in-GRE tunnel.
+                                </xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:group ref="OFPortIPGRETunnelType"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:sequence>
+                        <xs:element name="vxlan-tunnel">
+                            <xs:annotation>
+                                <xs:documentation> Properties of a VxLAN tunnel. </xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:group ref="OFPortVXLANTunnelType"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:sequence>
+                        <xs:element name="nvgre-tunnel">
+                            <xs:annotation>
+                                <xs:documentation> Properties of a NVGRE tunnel. </xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:group ref="OFPortNVGRETunnelType"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:choice>
             </xs:choice>
         </xs:sequence>
     </xs:group>
@@ -1666,7 +1661,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="role">
+            <xs:element name="role" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This element indicates the role of the OpenFlow Controller.
                         Semantics of these roles are specified in the OpenFlow specifications 1.0 -
@@ -1696,7 +1691,7 @@
                         error is returned. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="port" type="inet:port-number">
+            <xs:element name="port" type="inet:port-number" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The TCP port number at the OpenFlow Controller. This port
                         number is used by the OpenFlow Logical Switch when connecting to the
@@ -1705,7 +1700,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="local-ip-address" type="inet:ip-address">
+            <xs:element name="local-ip-address" type="inet:ip-address" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The local IP address of the OpenFlow Logical Switch when
                         connecting to this OpenFlow Controller. It is the source IP address of
@@ -1717,7 +1712,7 @@
                         &lt;bad-element&gt; element. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="local-port" type="inet:port-number">
+            <xs:element name="local-port" type="inet:port-number" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The local TCP port number of the OpenFlow Logical Switch when
                         connecting to this OpenFlow Controller. It is the source TCP port number of
@@ -1730,7 +1725,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="protocol">
+            <xs:element name="protocol" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> The default protocol tha the OpenFlow Logical Switch uses to
                         connect to this OpenFlow Controller. 'tls' is the default value. This
@@ -1744,7 +1739,7 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
-            <xs:element name="state">
+            <xs:element name="state" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation> This container holds connection state information that
                         indicate the connection state of the OpenFlow Logical Switch and the
@@ -1855,8 +1850,7 @@
                 <xs:element name="configuration-points" minOccurs="0">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="configuration-point" minOccurs="0"
-                                maxOccurs="unbounded">
+                            <xs:element name="configuration-point" maxOccurs="unbounded">
                                 <xs:annotation>
                                     <xs:documentation> The list of all Configuration Points known to
                                         the OpenFlow Capable Switch that may manage it using
@@ -1983,7 +1977,7 @@
                     </xs:annotation>
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="switch" minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="switch" maxOccurs="unbounded">
                                 <xs:annotation>
                                     <xs:documentation> The list of all OpenFlow Logical Switches on
                                         the OpenFlow Capable Switch. The element 'resource-id' of

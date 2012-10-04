@@ -248,7 +248,7 @@ simple_form(#logical_switch{id = Id,
                                                    ({certificate, Value}) ->
                                                         {'certificate', [#xmlText{value = Value}]};
                                                    ({flow_table, Value}) ->
-                                                        {'flow-table', [#xmlText{value = integer_to_list(Value)}]}
+                                                        {'flow-table', [#xmlText{value = Value}]}
                                                 end, Resources)}
                        ]};
 simple_form(#controller{id = Id,

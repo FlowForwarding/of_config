@@ -250,7 +250,7 @@ transform_xml(#xmlElement{name = 'logical-switch-resources', content = C}) ->
                    (#xmlElement{name = 'certificate'} = E, Acc)->
                         [{certificate, get_value(string, E)} | Acc];
                    (#xmlElement{name = 'flow-table'} = E, Acc) ->
-                        [{flow_table, get_value(integer, E)} | Acc];
+                        [{flow_table, get_value(string, E)} | Acc];
                    (_, Acc) ->
                         Acc
               end, [], C);

@@ -47,7 +47,9 @@ encode() ->
     CapableSwitchRecord1 = of_config:decode(XML1),
     ?assertEqual(true, is_record(CapableSwitchRecord1, capable_switch)),
 
-    XMLString = of_config:encode(CapableSwitchRecord1),
+    SimpleForm = of_config:encode(CapableSwitchRecord1),
+    DeepList = xmerl:export_simple(SimpleForm, xmerl_xml, [{prolog, ""}]),
+    XMLString = lists:flatten(DeepList),
     {XML2, _Rest} = xmerl_scan:string(XMLString),
     CapableSwitchRecord2 = of_config:decode(XML2),
     ?assertEqual(true, is_record(CapableSwitchRecord2, capable_switch)),

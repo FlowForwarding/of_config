@@ -43,8 +43,6 @@ decode(XML) ->
             of_config_decoder:to_capable_switch(XML)
     end.
 
--spec encode(#capable_switch{}) -> string().
+-spec encode(#capable_switch{}) -> of_config_encoder:simple_form().
 encode(Config) ->
-    DeepList = xmerl:export_simple(of_config_encoder:to_simple_form(Config),
-                                   xmerl_xml, [{prolog, ""}]),
-    lists:flatten(DeepList).
+    of_config_encoder:to_simple_form(Config).

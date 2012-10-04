@@ -39,7 +39,7 @@
 
 -spec to_simple_form(#capable_switch{}) -> [simple_form()].
 to_simple_form(Config) ->
-    [simple_form(Config)].
+    simple_form(Config).
 
 %%------------------------------------------------------------------------------
 %% Helper functions
@@ -242,13 +242,13 @@ simple_form(#logical_switch{id = Id,
                         element('lost-connection-behavior', atom, LCB),
                         list_to_simple_form('controllers', Controllers),
                         {'resources', lists:map(fun({port, Value}) ->
-                                                        {'port', [#xmlText{value = Value}]};
+                                                        {'port', [Value]};
                                                    ({queue, Value}) ->
-                                                        {'queue', [#xmlText{value = Value}]};
+                                                        {'queue', [Value]};
                                                    ({certificate, Value}) ->
-                                                        {'certificate', [#xmlText{value = Value}]};
+                                                        {'certificate', [Value]};
                                                    ({flow_table, Value}) ->
-                                                        {'flow-table', [#xmlText{value = Value}]}
+                                                        {'flow-table', [Value]}
                                                 end, Resources)}
                        ]};
 simple_form(#controller{id = Id,
@@ -277,11 +277,11 @@ simple_form(#controller{id = Id,
                    ]}.
 
 element(Name, string, Value) ->
-    {Name, [#xmlText{value = Value}]};
+    {Name, [Value]};
 element(Name, atom, Value) ->
-    {Name, [#xmlText{value = atom_to_list(Value)}]};
+    {Name, [atom_to_list(Value)]};
 element(Name, integer, Value) ->
-    {Name, [#xmlText{value = integer_to_list(Value)}]}.
+    {Name, [integer_to_list(Value)]}.
 
 nested_list(WrapperName, ElementName, ElementType, Elements) ->
     {WrapperName, lists:map(fun(E) ->

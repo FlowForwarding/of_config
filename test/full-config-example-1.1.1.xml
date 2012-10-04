@@ -54,15 +54,6 @@
                     <pause>symmetric</pause>
                 </advertised-peer>
             </features>
-            <vxlan-tunnel>
-                <local-endpoint-ipv4-address>192.168.1.1</local-endpoint-ipv4-address>
-                <remote-endpoint-ipv4-address>192.168.1.1</remote-endpoint-ipv4-address>
-                <vni-valid>true</vni-valid>
-                <vni>15581985</vni>
-                <udp-source-port>3804</udp-source-port>
-                <udp-dest-port>3801</udp-dest-port>
-                <udp-checksum>false</udp-checksum>
-            </vxlan-tunnel>
         </port>
         <queue>
             <resource-id>Queue2</resource-id>

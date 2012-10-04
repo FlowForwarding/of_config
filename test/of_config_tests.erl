@@ -27,23 +27,49 @@
 
 %% Tests -----------------------------------------------------------------------
 
-parser_test_() ->
+parser_11_test_() ->
     {setup,
-     fun setup/0,
+     fun setup_11/0,
      fun teardown/1,
-     [{"Decoding OF-Config 1.1 in Xmerl record representation "
-       "to internal record representation",
-       fun decode/0},
-      {"Encoding internal record representation to Xmerl simple form",
-       fun encode/0}]}.
+     [{"Decoding full-config-example-1.1.xml to #capable_switch{} "
+       "with OF-Config 1.1 XSD",
+       fun decode_11/0},
+      {"Encoding #capable_switch{} to XML with OF-Config 1.1 XSD",
+       fun encode_11/0}]}.
 
-decode() ->
-    {XML, _Rest} = xmerl_scan:file("../test/full-config-example-1.1.xml"),
+parser_111_test_() ->
+    {setup,
+     fun setup_111/0,
+     fun teardown/1,
+     [{"Decoding example XML files to #capable_switch{} "
+       "with OF-Config 1.1.1 XSD",
+       fun decode_111/0},
+      {"Encoding #capable_switch{} to XML with OF-Config 1.1.1 XSD",
+       fun encode_111/0}]}.
+
+decode_11() ->
+    decode("../test/full-config-example-1.1.xml").
+
+encode_11() ->
+    encode("../test/full-config-example-1.1.xml").
+
+decode_111() ->
+    decode("../test/full-config-example-1.1.1.xml"),
+    decode("../test/example1-edit-config-1.1.1.xml"),
+    decode("../test/example2-edit-config-1.1.1.xml").
+
+encode_111() ->
+    encode("../test/full-config-example-1.1.1.xml").
+
+%% Helper functions ------------------------------------------------------------
+ 
+decode(Filename) ->
+    {XML, _Rest} = xmerl_scan:file(Filename),
     Res = of_config:decode(XML),
     ?assertEqual(true, is_record(Res, capable_switch)).
 
-encode() ->
-    {XML1, _Rest} = xmerl_scan:file("../test/full-config-example-1.1.xml"),
+encode(Filename) ->
+    {XML1, _Rest} = xmerl_scan:file(Filename),
     CapableSwitchRecord1 = of_config:decode(XML1),
     ?assertEqual(true, is_record(CapableSwitchRecord1, capable_switch)),
 
@@ -58,10 +84,18 @@ encode() ->
 
 %% Fixtures --------------------------------------------------------------------
 
+setup_11() ->
+    application:set_env(of_config, of_config_schema, "of-config-1.1.xsd"),
+    application:set_env(of_config, version, '1.1'),
+    setup().
+
+setup_111() ->
+    application:set_env(of_config, of_config_schema, "of-config-1.1.1.xsd"),
+    application:set_env(of_config, version, '1.1.1'),
+    setup().
+
 setup() ->
     error_logger:tty(true),
-    application:set_env(of_config, of_config_schema, "of-config-1.1.xsd"),
-
     %% HACK: Rebar is not preserving the directory structure and copies
     %%       everything to .eunit, so this symlink makes code:priv_dir/1
     %%       and include_lib work again.

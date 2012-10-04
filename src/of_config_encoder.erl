@@ -192,8 +192,8 @@ simple_form(#flow_table{resource_id = RId,
                     nested_list('write-setfields', 'type', atom, WriteSetfields),
                     nested_list('apply-setfields', 'type', atom, ApplySetfields),
                     nested_list('wildcards', 'type', atom, Wildcards),
-                    element('metadata-match', integer, MetadataMatch),
-                    element('metadata-write', integer, MetadataWrite)
+                    element('metadata-match', string, MetadataMatch),
+                    element('metadata-write', string, MetadataWrite)
                    ]};
 simple_form(#logical_switch{id = Id,
                             capabilities = #capabilities{max_buffered_packets = MBP,
@@ -219,38 +219,44 @@ simple_form(#logical_switch{id = Id,
                             controllers = Controllers,
                             resources = Resources
                            }) ->
-    {'logical-switch', [element('id', string, Id),
-                        {'capabilities', [element('max-buffered-packets', integer, MBP),
-                                          element('max-tables', integer, MT),
-                                          element('max-ports', integer, MP),
-                                          element('flow-statistics', atom, FS),
-                                          element('table-statistics', atom, TS),
-                                          element('port-statistics', atom, PS),
-                                          element('group-statistics', atom, GS),
-                                          element('queue-statistics', atom, QS),
-                                          element('reassemble-ip-fragments', atom, RIF),
-                                          element('block-looping-ports', atom, BLP),
-                                          nested_list('reserved-port-types', 'type', atom, RPT),
-                                          nested_list('group-types', 'type', atom, GT),
-                                          nested_list('group-capabilities', 'capability', atom, GC),
-                                          nested_list('action-types', 'type', atom, AT),
-                                          nested_list('instruction-types', 'type', atom, IT)
-                                         ]},
-                        element('datapath-id', string, DId),
-                        element('enabled', atom, E),
-                        element('check-controller-certificate', atom, CCC),
-                        element('lost-connection-behavior', atom, LCB),
-                        list_to_simple_form('controllers', Controllers),
-                        {'resources', lists:map(fun({port, Value}) ->
-                                                        {'port', [Value]};
-                                                   ({queue, Value}) ->
-                                                        {'queue', [Value]};
-                                                   ({certificate, Value}) ->
-                                                        {'certificate', [Value]};
-                                                   ({flow_table, Value}) ->
-                                                        {'flow-table', [Value]}
-                                                end, Resources)}
-                       ]};
+    Switch = case application:get_env(of_config, version) of
+                 {ok, '1.1'} ->
+                     'logical-switch';
+                 {ok, '1.1.1'} ->
+                     'switch'
+             end,
+    {Switch, [element('id', string, Id),
+              {'capabilities', [element('max-buffered-packets', integer, MBP),
+                                element('max-tables', integer, MT),
+                                element('max-ports', integer, MP),
+                                element('flow-statistics', atom, FS),
+                                element('table-statistics', atom, TS),
+                                element('port-statistics', atom, PS),
+                                element('group-statistics', atom, GS),
+                                element('queue-statistics', atom, QS),
+                                element('reassemble-ip-fragments', atom, RIF),
+                                element('block-looping-ports', atom, BLP),
+                                nested_list('reserved-port-types', 'type', atom, RPT),
+                                nested_list('group-types', 'type', atom, GT),
+                                nested_list('group-capabilities', 'capability', atom, GC),
+                                nested_list('action-types', 'type', atom, AT),
+                                nested_list('instruction-types', 'type', atom, IT)
+                               ]},
+              element('datapath-id', string, DId),
+              element('enabled', atom, E),
+              element('check-controller-certificate', atom, CCC),
+              element('lost-connection-behavior', atom, LCB),
+              list_to_simple_form('controllers', Controllers),
+              {'resources', lists:map(fun({port, Value}) ->
+                                              {'port', [Value]};
+                                         ({queue, Value}) ->
+                                              {'queue', [Value]};
+                                         ({certificate, Value}) ->
+                                              {'certificate', [Value]};
+                                         ({flow_table, Value}) ->
+                                              {'flow-table', [Value]}
+                                      end, Resources)}
+             ]};
 simple_form(#controller{id = Id,
                         role = Role,
                         ip_address = IP,
@@ -291,5 +297,7 @@ nested_list(WrapperName, ElementName, ElementType, Elements) ->
 nested_elements(WrapperName, Elements) ->
     {WrapperName, [element(Name, Type, Value) || {Name, Type, Value} <- Elements]}.
 
+list_to_simple_form(_WrapperName, undefined) ->
+    undefined;
 list_to_simple_form(WrapperName, List) ->
     {WrapperName, [simple_form(E) || E <- List]}.

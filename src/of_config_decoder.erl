@@ -165,8 +165,8 @@ transform_xml(#xmlElement{name = 'flow-table', content = C}) ->
                 write_setfields = transform_xml(get_child('write-setfields', C)),
                 apply_setfields = transform_xml(get_child('apply-setfields', C)),
                 wildcards = transform_xml(get_child('wildcards', C)),
-                metadata_match = get_from_child(integer, 'metadata-match', C),
-                metadata_write = get_from_child(integer, 'metadata-write', C)};
+                metadata_match = get_from_child(string, 'metadata-match', C),
+                metadata_write = get_from_child(string, 'metadata-write', C)};
 transform_xml(#xmlElement{name = 'next-tables', content = C}) ->
     get_all_children(integer, C);
 transform_xml(#xmlElement{name = 'instructions', content = C}) ->
@@ -186,6 +186,10 @@ transform_xml(#xmlElement{name = 'wildcards', content = C}) ->
 %% <logical-switches/>
 transform_xml(#xmlElement{name = 'logical-switches', content = C}) ->
     transform_all_children(C);
+transform_xml(#xmlElement{name = 'switch'} = E) ->
+    %% Support for difference in OF-Config 1.1 and 1.1.1 where 'logical-switch'
+    %% was renamed to 'switch' element
+    transform_xml(E#xmlElement{name = 'logical-switch'});
 transform_xml(#xmlElement{name = 'logical-switch', content = C}) ->
     #logical_switch{id = get_from_child(string, id, C),
                     capabilities = transform_xml(get_child(capabilities, C)),
@@ -308,5 +312,7 @@ get_value(string, #xmlElement{content = [#xmlText{value = Value}]}) ->
 get_value(atom, #xmlElement{content = [#xmlText{value = Value}]}) ->
     list_to_atom(Value);
 get_value(integer, #xmlElement{content = [#xmlText{value = Value}]}) ->
-    list_to_integer(Value).
+    list_to_integer(Value);
+get_value(_, _) ->
+    undefined.
 

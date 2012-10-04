@@ -1,9 +1,8 @@
 <capable-switch xmlns="urn:onf:params:xml:ns:onf:of12:config"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-                xsi:schemaLocation="urn:onf:params:xml:ns:onf:of12:config ../priv/of-config-1.1.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xsi:schemaLocation="urn:onf:params:xml:ns:onf:of12:config of-config-1.1.xsd">
     <id>CapableSwitch0</id>
-
     <configuration-points>
         <configuration-point>
             <id>ConfigurationPoint1</id>
@@ -11,7 +10,6 @@
             <protocol>ssh</protocol>
         </configuration-point>
     </configuration-points>
-
     <resources>
         <port>
             <resource-id>Port214748364</resource-id>
@@ -57,7 +55,6 @@
                 </advertised-peer>
             </features>
         </port>
-
         <queue>
             <resource-id>Queue2</resource-id>
             <id>2</id>
@@ -69,45 +66,37 @@
                 <experimenter>708</experimenter>
             </properties>
         </queue>
-        
         <owned-certificate>
             <resource-id>ownedCertificate3</resource-id>
             <certificate>AEF134F56EDB667DFA4320AEF134F56EDB667DFA4320</certificate>
             <private-key>
                 <RSAKeyValue>
                     <Modulus>AEF134F56EDB667DFA4320AEF134F56EDB667DFA4320</Modulus>
-                    <Exponent>DFA4320AEF134F56EDB6SSS</Exponent>
+                    <Exponent>DFA4320AEF134F56EDB6</Exponent>
                 </RSAKeyValue>
             </private-key>
         </owned-certificate>
-
         <external-certificate>
             <resource-id>ownedCertificate3</resource-id>
             <certificate>AEF134F56EDB667DFA4320AEF134F56EDB667DFA4320AEF1</certificate>
         </external-certificate>
-        
         <flow-table>
             <resource-id>flowtable1</resource-id>
             <max-entries>255</max-entries>
             <next-tables>
                 <table-id>100</table-id>
-                <!-- <table-id>101</table-id> -->
             </next-tables>
             <instructions>
                 <type>apply-actions</type>
-                <!-- <type>clear-actions</type> -->
             </instructions>
             <matches>
                 <type>input-port</type>
-                <!-- <type>ethernet-dest</type> -->
             </matches>
             <write-actions>
                 <type>output</type>
-                <!-- <type>pop-mpls</type> -->
             </write-actions>
             <apply-actions>
                 <type>output</type>
-                <!-- <type>set-queue</type> -->
             </apply-actions>
             <write-setfields>
                 <type>ethernet-dest</type>
@@ -121,13 +110,10 @@
             <metadata-match>30</metadata-match>
             <metadata-write>30</metadata-write>
         </flow-table>
-
     </resources>
-
     <logical-switches>
         <logical-switch>
             <id>LogicalSwitch5</id>
-
             <capabilities>
                 <max-buffered-packets>512</max-buffered-packets>
                 <max-tables>1024</max-tables>
@@ -155,12 +141,10 @@
                     <type>write-actions</type>
                 </instruction-types>
             </capabilities>
-            
             <datapath-id>datapath-id0</datapath-id>
             <enabled>true</enabled>
             <check-controller-certificate>false</check-controller-certificate>
             <lost-connection-behavior>failSecureMode</lost-connection-behavior>
-            
             <controllers>
                 <controller>
                     <id>Controller3</id>
@@ -180,7 +164,6 @@
                     </state>
                 </controller>
             </controllers>
-            
             <resources>
                 <port>port2</port>
                 <port>port3</port>
@@ -188,7 +171,7 @@
                 <queue>queue1</queue>
                 <certificate>ownedCertificate4</certificate>
                 <flow-table>1</flow-table>
-                <flow-table>2</flow-table>    
+                <flow-table>2</flow-table>
             </resources>
         </logical-switch>
     </logical-switches>

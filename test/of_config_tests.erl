@@ -38,12 +38,12 @@ parser_test_() ->
        fun encode/0}]}.
 
 decode() ->
-    {XML, _Rest} = xmerl_scan:file("../test/full-config-example.xml"),
+    {XML, _Rest} = xmerl_scan:file("../test/full-config-example-1.1.xml"),
     Res = of_config:decode(XML),
     ?assertEqual(true, is_record(Res, capable_switch)).
 
 encode() ->
-    {XML1, _Rest} = xmerl_scan:file("../test/full-config-example.xml"),
+    {XML1, _Rest} = xmerl_scan:file("../test/full-config-example-1.1.xml"),
     CapableSwitchRecord1 = of_config:decode(XML1),
     ?assertEqual(true, is_record(CapableSwitchRecord1, capable_switch)),
 

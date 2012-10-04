@@ -4,5 +4,6 @@
   {applications, [kernel,
                   stdlib,
                   xmerl]},
-  {env, [{of_config_schema, "of-config-1.1.xsd"}]}
+  {env, [{of_config_schema, "of-config-1.1.1.xsd"},
+         {version, '1.1.1'}]}
  ]}.

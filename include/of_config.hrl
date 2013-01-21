@@ -329,7 +329,7 @@
           enabled = true :: boolean(),
           check_controller_certificate = false :: boolean(),
           lost_connection_behavior =
-              fail_standalone_mode :: lost_connection_behaviour(),
+              fail_secure_mode :: lost_connection_behaviour(),
           controllers = [] :: [#controller{}],
           resources = [] :: [tuple(resource_name(), string())]
          }).

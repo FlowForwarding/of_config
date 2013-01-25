@@ -232,19 +232,19 @@
                  | '1.0'.
 
 -record(controller_state, {
-          connection_state = up :: connection_state(),
+          connection_state :: connection_state(),
           current_version :: version(),
           supported_versions = [] :: [version()]
          }).
 
 -record(controller, {
           id :: id(),
-          role = equal :: role(),
+          role :: role(),
           ip_address :: ip_address(),
-          port = 6633 :: integer(),
+          port :: integer(),
           local_ip_address :: ip_address(),
           local_port :: integer(),
-          protocol = tcp :: controller_protocol(),
+          protocol :: controller_protocol(),
           state :: #controller_state{}
          }).
 
@@ -317,12 +317,11 @@
           id :: id(),
           capabilities :: #capabilities{},
           datapath_id :: binary(),
-          enabled = true :: boolean(),
-          check_controller_certificate = false :: boolean(),
-          lost_connection_behavior =
-              fail_standalone_mode :: lost_connection_behaviour(),
+          enabled :: boolean(),
+          check_controller_certificate :: boolean(),
+          lost_connection_behavior :: lost_connection_behaviour(),
           controllers = [] :: [#controller{}],
-          resources = [] :: [resource()]
+          resources :: [resource()]
          }).
 
 %% 7.2 OpenFlow Configuration Point --------------------------------------------

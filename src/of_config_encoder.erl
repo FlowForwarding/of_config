@@ -192,8 +192,8 @@ simple_form(#flow_table{resource_id = RId,
                     nested_list('write-setfields', 'type', atom, WriteSetfields),
                     nested_list('apply-setfields', 'type', atom, ApplySetfields),
                     nested_list('wildcards', 'type', atom, Wildcards),
-                    element('metadata-match', string, MetadataMatch),
-                    element('metadata-write', string, MetadataWrite)
+                    element('metadata-match', string, to_hex(MetadataMatch)),
+                    element('metadata-write', string, to_hex(MetadataWrite))
                    ]};
 simple_form(#logical_switch{id = Id,
                             capabilities = #capabilities{max_buffered_packets = MBP,
@@ -301,3 +301,13 @@ list_to_simple_form(_WrapperName, undefined) ->
     undefined;
 list_to_simple_form(WrapperName, List) ->
     {WrapperName, [simple_form(E) || E <- List]}.
+
+to_hex(Binary) ->
+    to_hex(Binary, []).
+
+to_hex(<<>>, Hex) ->
+    lists:flatten(lists:reverse(Hex));
+to_hex(<<B1:4, B2:4, Binary/binary>>, Hex) ->
+    I1 = integer_to_list(B1, 16),
+    I2 = integer_to_list(B2, 16),
+    to_hex(Binary, [I2, I1 | Hex]).

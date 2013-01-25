@@ -45,6 +45,13 @@ to_simple_form(Config) ->
 %% Helper functions
 %%------------------------------------------------------------------------------
 
+remove_undefined(L) ->
+    lists:filter(fun(undefined) ->
+                         false;
+                    (_) ->
+                         true
+                 end, L).
+
 -spec root_attributes() -> list(tuple(atom(), string())).
 root_attributes() ->
     [{'xmlns', "urn:onf:params:xml:ns:onf:of12:config"},
@@ -57,10 +64,11 @@ simple_form(#capable_switch{id = Id,
                             configuration_points = CP,
                             resources = R,
                             logical_switches = LS}) ->
-    {'capable-switch', root_attributes(), [element(id, string, Id),
-                                           list_to_simple_form('configuration-points', CP),
-                                           list_to_simple_form('resources', R),
-                                           list_to_simple_form('logical-switches', LS)]};
+    L = [element(id, string, Id),
+         list_to_simple_form('configuration-points', CP),
+         list_to_simple_form('resources', R),
+         list_to_simple_form('logical-switches', LS)],
+    {'capable-switch', root_attributes(), remove_undefined(L)};
 simple_form(#configuration_point{id = Id,
                                  uri = Uri,
                                  protocol = Proto}) ->

@@ -315,4 +315,3 @@ get_value(integer, #xmlElement{content = [#xmlText{value = Value}]}) ->
     list_to_integer(Value);
 get_value(_, _) ->
     undefined.
-

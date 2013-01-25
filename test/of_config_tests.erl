@@ -45,7 +45,11 @@ parser_111_test_() ->
        "with OF-Config 1.1.1 XSD",
        fun decode_111/0},
       {"Encoding #capable_switch{} to XML with OF-Config 1.1.1 XSD",
-       fun encode_111/0}]}.
+       fun encode_111/0},
+      {"Encoding of partial #capable_switch{} record returned by get-config "
+       "to XML with OF-Config 1.1.1 XSD",
+       fun encode_partial_111/0}
+     ]}.
 
 decode_11() ->
     decode("../test/full-config-example-1.1.xml").
@@ -61,14 +65,23 @@ decode_111() ->
 encode_111() ->
     encode("../test/full-config-example-1.1.1.xml").
 
+encode_partial_111() ->
+    encode_and_compare_with_original("../test/get-config-1.1.1.xml").
+
 %% Helper functions ------------------------------------------------------------
- 
+
 decode(Filename) ->
     {XML, _Rest} = xmerl_scan:file(Filename),
     Res = of_config:decode(XML),
     ?assertEqual(true, is_record(Res, capable_switch)).
 
 encode(Filename) ->
+    encode(Filename, false).
+
+encode_and_compare_with_original(Filename) ->
+    encode(Filename, true).
+
+encode(Filename, CompareWithOriginal) ->
     {XML1, _Rest} = xmerl_scan:file(Filename),
     CapableSwitchRecord1 = of_config:decode(XML1),
     ?assertEqual(true, is_record(CapableSwitchRecord1, capable_switch)),
@@ -76,10 +89,17 @@ encode(Filename) ->
     SimpleForm = of_config:encode(CapableSwitchRecord1),
     DeepList = xmerl:export_simple([SimpleForm], xmerl_xml, [{prolog, ""}]),
     XMLString = lists:flatten(DeepList),
+    case CompareWithOriginal of
+        true ->
+            OriginalXMLString = lists:flatten(xmerl:export([XML1], xmerl_xml,
+                                                           [{prolog, ""}])),
+            ?assertEqual(OriginalXMLString, XMLString);
+        false ->
+            ok
+    end,
     {XML2, _Rest} = xmerl_scan:string(XMLString),
     CapableSwitchRecord2 = of_config:decode(XML2),
     ?assertEqual(true, is_record(CapableSwitchRecord2, capable_switch)),
-
     ?assertEqual(CapableSwitchRecord1, CapableSwitchRecord2).
 
 %% Fixtures --------------------------------------------------------------------
@@ -101,7 +121,6 @@ setup() ->
     %%       and include_lib work again.
     file:make_symlink("..", "of_config"),
     code:add_path("./of_config/ebin"),
-    
     application:load(of_config),
     application:start(xmerl),
     application:start(of_config).
@@ -110,4 +129,3 @@ teardown(_) ->
     application:stop(of_config),
     application:stop(xmerl),
     file:delete("of_config").
-    

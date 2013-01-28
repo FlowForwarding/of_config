@@ -21,6 +21,8 @@
 -type id() :: string().
 -type ip_address() :: string().
 
+-type operation() :: undefined | merge | replace | create | delete | remove.
+
 %% 7.12 OpenFlow Flow Table ----------------------------------------------------
 
 -type match_field_type() :: input_port
@@ -99,6 +101,7 @@
                      | #private_key_dsa{}.
 
 -record(certificate, {
+          operation :: operation(),
           resource_id :: id(),
           type :: certificate_type(),
           certificate :: binary(),
@@ -139,7 +142,7 @@
                     | down.
 
 -record(port_configuration, {
-          admin_state = up :: boolean(),
+          admin_state = up :: oper_state(),
           no_receive = false :: boolean(),
           no_forward = false :: boolean(),
           no_packet_in = false :: boolean()
@@ -187,6 +190,7 @@
                 | #nvgre_tunnel{}.
 
 -record(port, {
+          operation :: operation(),
           resource_id :: id(),
           number :: integer(),
           name :: binary(),
@@ -209,6 +213,7 @@
 
 
 -record(queue, {
+          operation :: operation(),
           resource_id :: id(),
           id :: id(),
           port :: id(),
@@ -227,25 +232,30 @@
 -type connection_state() :: up
                           | down.
 
--type version() :: '1.2'
+-type version() :: not_applicable
+                 | '1.0'
+                 | '1.0.1'
                  | '1.1'
-                 | '1.0'.
+                 | '1.2'
+                 | '1.3'
+                 | '1.3.1'.
 
 -record(controller_state, {
-          connection_state :: connection_state(),
-          current_version :: version(),
-          supported_versions = [] :: [version()]
+          connection_state   = up    :: connection_state(),
+          current_version    = '1.3' :: version(),
+          supported_versions = []    :: [version()]
          }).
 
 -record(controller, {
+          operation :: operation(),
           id :: id(),
-          role :: role(),
+          role = equal :: role(),
           ip_address :: ip_address(),
-          port :: integer(),
+          port = 6633 :: integer(),
           local_ip_address :: ip_address(),
           local_port :: integer(),
-          protocol :: controller_protocol(),
-          state :: #controller_state{}
+          protocol = tcp :: controller_protocol(),
+          state = #controller_state{} :: #controller_state{}
          }).
 
 %% 7.4 Logical Switch Capabilities ---------------------------------------------
@@ -291,21 +301,21 @@
                           | goto_table.
 
 -record(capabilities, {
-          max_buffered_packets :: integer(),
-          max_tables :: integer(),
-          max_ports :: integer(),
-          flow_statistics = false :: boolean(),
-          table_statistics = false :: boolean(),
-          port_statistics = false :: boolean(),
-          group_statistics = false :: boolean(),
-          queue_statistics = false :: boolean(),
+          max_buffered_packets    = 0     :: integer(),
+          max_tables              = 255   :: integer(),
+          max_ports               = 65536 :: integer(),
+          flow_statistics         = false :: boolean(),
+          table_statistics        = false :: boolean(),
+          port_statistics         = false :: boolean(),
+          group_statistics        = false :: boolean(),
+          queue_statistics        = false :: boolean(),
           reassemble_ip_fragments = false :: boolean(),
-          block_looping_ports = false :: boolean(),
-          reserved_port_types = [] :: [reserved_port_type()],
-          group_types = [] :: [group_type()],
-          group_capabilities = [] :: [group_capability()],
-          action_types = [] :: [action_type()],
-          instruction_types = [] :: [instruction_type()]
+          block_looping_ports     = false :: boolean(),
+          reserved_port_types     = []    :: [reserved_port_type()],
+          group_types             = []    :: [group_type()],
+          group_capabilities      = []    :: [group_capability()],
+          action_types            = []    :: [action_type()],
+          instruction_types       = []    :: [instruction_type()]
          }).
 
 %% 7.3 OpenFlow Logical Switch -------------------------------------------------
@@ -313,15 +323,21 @@
 -type lost_connection_behaviour() :: fail_secure_mode
                                    | fail_standalone_mode.
 
+-type resource_name() :: port
+                       | queue
+                       | certificate
+                       | flow_table.
+
 -record(logical_switch, {
           id :: id(),
-          capabilities :: #capabilities{},
+          capabilities = #capabilities{} :: #capabilities{},
           datapath_id :: binary(),
-          enabled :: boolean(),
-          check_controller_certificate :: boolean(),
-          lost_connection_behavior :: lost_connection_behaviour(),
+          enabled = true :: boolean(),
+          check_controller_certificate = false :: boolean(),
+          lost_connection_behavior =
+              fail_secure_mode :: lost_connection_behaviour(),
           controllers = [] :: [#controller{}],
-          resources :: [resource()]
+          resources = [] :: [tuple(resource_name(), string())]
          }).
 
 %% 7.2 OpenFlow Configuration Point --------------------------------------------

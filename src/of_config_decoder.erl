@@ -54,8 +54,9 @@ transform_xml(#xmlElement{name = 'configuration-point', content = C}) ->
 %% <resources/>
 transform_xml(#xmlElement{name = 'resources', content = C}) ->
     transform_all_children(C);
-transform_xml(#xmlElement{name = 'port', content = C}) ->
-    #port{resource_id = get_from_child(string, 'resource-id', C),
+transform_xml(#xmlElement{name = 'port', content = C, attributes = Attrs}) ->
+    #port{operation = get_operation(Attrs),
+          resource_id = get_from_child(string, 'resource-id', C),
           number = get_from_child(integer, number, C),
           name = get_from_child(string, name, C),
           current_rate = get_from_child(integer, 'current-rate', C),
@@ -110,8 +111,9 @@ transform_xml(#xmlElement{name = 'vxlan-tunnel', content = _C}) ->
     #vxlan_tunnel{};
 transform_xml(#xmlElement{name = 'nvgre-tunnel', content = _C}) ->
     #nvgre_tunnel{};
-transform_xml(#xmlElement{name = 'queue', content = C}) ->
-    #queue{resource_id = get_from_child(string, 'resource-id', C),
+transform_xml(#xmlElement{name = 'queue', content = C, attributes = Attrs}) ->
+    #queue{operation = get_operation(Attrs),
+           resource_id = get_from_child(string, 'resource-id', C),
            id = get_from_child(integer, 'id', C),
            port = get_from_child(integer, 'port', C),
            properties = transform_xml(get_child(properties, C))
@@ -124,8 +126,9 @@ transform_xml(#xmlElement{name = 'properties', content = C}) ->
                                                      (_, Acc) ->
                                                           Acc
                                                   end, [], C)};
-transform_xml(#xmlElement{name = 'owned-certificate', content = C}) ->
-    #certificate{resource_id = get_from_child(string, 'resource-id', C),
+transform_xml(#xmlElement{name = 'owned-certificate', content = C, attributes = Attrs}) ->
+    #certificate{operation = get_operation(Attrs),
+                 resource_id = get_from_child(string, 'resource-id', C),
                  type = owned,
                  certificate = get_from_child(string, certificate, C),
                  private_key = transform_xml(get_child('private-key', C))               
@@ -149,8 +152,9 @@ transform_xml(#xmlElement{name = 'private-key', content = C}) ->
             #private_key_rsa{modulus = get_from_child(string, 'Modulus', RSAChildren),
                              exponent = get_from_child(string, 'Exponent', RSAChildren)}
     end;
-transform_xml(#xmlElement{name = 'external-certificate', content = C}) ->
-    #certificate{resource_id = get_from_child(string, 'resource-id', C),
+transform_xml(#xmlElement{name = 'external-certificate', content = C, attributes = Attrs}) ->
+    #certificate{operation = get_operation(Attrs),
+                 resource_id = get_from_child(string, 'resource-id', C),
                  type = external,
                  certificate = get_from_child(string, certificate, C)
                 };
@@ -229,8 +233,9 @@ transform_xml(#xmlElement{name = 'instruction-types', content = C}) ->
     get_all_children(atom, C);
 transform_xml(#xmlElement{name = 'controllers', content = C}) ->
     transform_all_children(C);
-transform_xml(#xmlElement{name = 'controller', content = C}) ->
-    #controller{id = get_from_child(string, id, C),
+transform_xml(#xmlElement{name = 'controller', content = C, attributes = Attrs}) ->
+    #controller{operation = get_operation(Attrs),
+                id = get_from_child(string, id, C),
                 role = get_from_child(atom, role, C),
                 ip_address = get_from_child(string, 'ip-address', C),
                 port = get_from_child(integer, 'port', C),
@@ -307,11 +312,31 @@ get_child_with_name(Name, NewName, Children) ->
     end.
 
 -spec get_value(payload_type(), #xmlElement{}) -> payload().
+get_value(string, #xmlElement{content = [#xmlText{value = Value}],
+                              attributes = [#xmlAttribute{name = operation,
+                                                          value = Operation}]}) ->
+    {Operation, Value};
 get_value(string, #xmlElement{content = [#xmlText{value = Value}]}) ->
     Value;
+get_value(atom, #xmlElement{content = [#xmlText{value = Value}],
+                            attributes = [#xmlAttribute{name = operation,
+                                                        value = Operation}]}) ->
+    {Operation, list_to_atom(Value)};
 get_value(atom, #xmlElement{content = [#xmlText{value = Value}]}) ->
     list_to_atom(Value);
+get_value(integer, #xmlElement{content = [#xmlText{value = Value}],
+                               attributes = [#xmlAttribute{name = operation,
+                                                           value = Operation}]}) ->
+    {Operation, list_to_integer(Value)};
 get_value(integer, #xmlElement{content = [#xmlText{value = Value}]}) ->
     list_to_integer(Value);
 get_value(_, _) ->
     undefined.
+
+get_operation(Attrs) ->
+    case lists:keyfind(operation, #xmlAttribute.name, Attrs) of
+        #xmlAttribute{value=Value} ->
+            list_to_atom(Value);
+        false ->
+            undefined
+    end.

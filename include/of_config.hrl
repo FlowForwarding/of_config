@@ -21,6 +21,8 @@
 -type id() :: string().
 -type ip_address() :: string().
 
+-type operation() :: undefined | merge | replace | create | delete | remove.
+
 %% 7.12 OpenFlow Flow Table ----------------------------------------------------
 
 -type match_field_type() :: input_port
@@ -99,6 +101,7 @@
                      | #private_key_dsa{}.
 
 -record(certificate, {
+          operation :: operation(),
           resource_id :: id(),
           type :: certificate_type(),
           certificate :: binary(),
@@ -187,6 +190,7 @@
                 | #nvgre_tunnel{}.
 
 -record(port, {
+          operation :: operation(),
           resource_id :: id(),
           number :: integer(),
           name :: binary(),
@@ -209,6 +213,7 @@
 
 
 -record(queue, {
+          operation :: operation(),
           resource_id :: id(),
           id :: id(),
           port :: id(),
@@ -242,6 +247,7 @@
          }).
 
 -record(controller, {
+          operation :: operation(),
           id :: id(),
           role = equal :: role(),
           ip_address :: ip_address(),

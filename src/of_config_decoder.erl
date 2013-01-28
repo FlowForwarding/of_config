@@ -315,19 +315,19 @@ get_child_with_name(Name, NewName, Children) ->
 get_value(string, #xmlElement{content = [#xmlText{value = Value}],
                               attributes = [#xmlAttribute{name = operation,
                                                           value = Operation}]}) ->
-    {Operation, Value};
+    {list_to_atom(Operation), Value};
 get_value(string, #xmlElement{content = [#xmlText{value = Value}]}) ->
     Value;
 get_value(atom, #xmlElement{content = [#xmlText{value = Value}],
                             attributes = [#xmlAttribute{name = operation,
                                                         value = Operation}]}) ->
-    {Operation, list_to_atom(Value)};
+    {list_to_atom(Operation), list_to_atom(Value)};
 get_value(atom, #xmlElement{content = [#xmlText{value = Value}]}) ->
     list_to_atom(Value);
 get_value(integer, #xmlElement{content = [#xmlText{value = Value}],
                                attributes = [#xmlAttribute{name = operation,
                                                            value = Operation}]}) ->
-    {Operation, list_to_integer(Value)};
+    {list_to_atom(Operation), list_to_integer(Value)};
 get_value(integer, #xmlElement{content = [#xmlText{value = Value}]}) ->
     list_to_integer(Value);
 get_value(_, _) ->

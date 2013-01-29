@@ -9,7 +9,7 @@
             <controllers>
                 <controller>
                     <id>controller-0</id>
-                    <ip-address>10.0.0.10</ip-address>
+                    <ip-address operation="replace">10.0.0.10</ip-address>
                 </controller>
             </controllers>
         </switch>

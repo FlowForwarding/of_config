@@ -1,8 +1,8 @@
-<capable-switch xmlns="urn:onf:of111:config:yang"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-    xsi:schemaLocation="urn:onf:of111:config:yang of-config-1.1.1.xsd">
-    <id>CapableSwitch0</id>
+<capable-switch xmlns="urn:onf:params:xml:ns:onf:of12:config"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+                xsi:schemaLocation="urn:onf:params:xml:ns:onf:of12:config of-config-1.1.1.xsd">
+  <id>CapableSwitch0</id>
     <configuration-points>
         <configuration-point>
             <id>ConfigurationPoint1</id>
@@ -146,7 +146,7 @@
             <check-controller-certificate>false</check-controller-certificate>
             <lost-connection-behavior>failSecureMode</lost-connection-behavior>
             <controllers>
-                <controller>
+              <controller>
                     <id>Controller3</id>
                     <role>master</role>
                     <ip-address>192.168.2.1</ip-address>
@@ -157,9 +157,11 @@
                     <state>
                         <connection-state>up</connection-state>
                         <current-version>1.2</current-version>
-                        <supported-versions>1.0</supported-versions>
-                        <supported-versions>1.2</supported-versions>
-                        <supported-versions>1.3</supported-versions>
+                        <supported-versions>
+                          <version>1.0</version>
+                          <version>1.2</version>
+                          <version>1.3</version>
+                        </supported-versions>
                     </state>
                 </controller>
             </controllers>

@@ -31,31 +31,45 @@ parser_11_test_() ->
     {setup,
      fun setup_11/0,
      fun teardown/1,
-     [{"Decoding full-config-example-1.1.xml to #capable_switch{} "
+     [
+      {"Decoding full-config-example-1.1.xml to #capable_switch{} "
        "with OF-Config 1.1 XSD",
        fun decode_11/0},
-      {"Encoding #capable_switch{} to XML with OF-Config 1.1 XSD",
-       fun encode_11/0}]}.
+      {"Encoding minimal #capable_switch{} record "
+       "to XML with OF-Config 1.1 XSD",
+       fun encode_minimal_11/0},
+      {"Encoding full #capable_switch{} to XML with OF-Config 1.1 XSD",
+       fun encode_11/0},
+      {"Encoding of partial #capable_switch{} record returned by get-config "
+       "to XML with OF-Config 1.1 XSD",
+       fun encode_get_config_11/0}
+     ]}.
 
 parser_111_test_() ->
     {setup,
      fun setup_111/0,
      fun teardown/1,
-     [{"Decoding example XML files to #capable_switch{} "
+     [
+      {"Decoding example XML files to #capable_switch{} "
        "with OF-Config 1.1.1 XSD",
        fun decode_111/0},
-      {"Encoding #capable_switch{} to XML with OF-Config 1.1.1 XSD",
+      {"Encoding minimal #capable_switch{} record"
+       "to XML with OF-Config 1.1.1 XSD",
+       fun encode_minimal_111/0},
+      {"Encoding full #capable_switch{} to XML with OF-Config 1.1.1 XSD",
        fun encode_111/0},
       {"Encoding of partial #capable_switch{} record returned by get-config "
        "to XML with OF-Config 1.1.1 XSD",
-       fun encode_partial_111/0}
+       fun encode_get_config_111/0}
      ]}.
 
 decode_11() ->
     decode("../test/full-config-example-1.1.xml").
 
 encode_11() ->
-    encode("../test/full-config-example-1.1.xml").
+    {CapableSwitch, XML} =
+        get_record_from_xml("../test/full-config-example-1.1.xml"),
+    encode(CapableSwitch, XML).
 
 decode_111() ->
     decode("../test/full-config-example-1.1.1.xml"),
@@ -63,37 +77,62 @@ decode_111() ->
     decode("../test/example2-edit-config-1.1.1.xml").
 
 encode_111() ->
-    encode("../test/full-config-example-1.1.1.xml").
+    {CapableSwitch, XML} =
+        get_record_from_xml("../test/full-config-example-1.1.1.xml"),
+    encode(CapableSwitch, XML).
 
-encode_partial_111() ->
-    encode_and_compare_with_original("../test/get-config-1.1.1.xml").
+encode_minimal_11() ->
+    {CapableSwitch, XML} =
+        get_record_from_xml("../test/get-config-1.1.xml"),
+    encode(CapableSwitch, XML).
+
+encode_minimal_111() ->
+    {CapableSwitch, XML} =
+        get_record_from_xml("../test/get-config-1.1.1.xml"),
+    encode(CapableSwitch, XML).
+
+encode_get_config_11() ->
+    CapableSwitch = of_config_fixtures:get_config(),
+    encode(CapableSwitch).
+
+encode_get_config_111() ->
+    CapableSwitch = of_config_fixtures:get_config(),
+    encode(CapableSwitch).
 
 %% Helper functions ------------------------------------------------------------
+
+get_record_from_xml(Filename) ->
+    {XML, _Rest} = xmerl_scan:file(Filename),
+    CapableSwitchRecord = of_config:decode(XML),
+    ?assertEqual(true, is_record(CapableSwitchRecord, capable_switch)),
+    {CapableSwitchRecord, XML}.
 
 decode(Filename) ->
     {XML, _Rest} = xmerl_scan:file(Filename),
     Res = of_config:decode(XML),
     ?assertEqual(true, is_record(Res, capable_switch)).
 
-encode(Filename) ->
-    encode(Filename, false).
+encode(CapableSwitch) ->
+    encode(CapableSwitch, xml, false).
 
-encode_and_compare_with_original(Filename) ->
-    encode(Filename, true).
+encode(CapableSwitch, XML) ->
+    encode(CapableSwitch, XML, true).
 
-encode(Filename, CompareWithOriginal) ->
-    {XML1, _Rest} = xmerl_scan:file(Filename),
-    CapableSwitchRecord1 = of_config:decode(XML1),
-    ?assertEqual(true, is_record(CapableSwitchRecord1, capable_switch)),
-
+encode(CapableSwitchRecord1, XML, CompareWithOriginal) ->
     SimpleForm = of_config:encode(CapableSwitchRecord1),
     DeepList = xmerl:export_simple([SimpleForm], xmerl_xml, [{prolog, ""}]),
     XMLString = lists:flatten(DeepList),
     case CompareWithOriginal of
         true ->
-            OriginalXMLString = lists:flatten(xmerl:export([XML1], xmerl_xml,
+            %% Get rid of whitespace characters to compare XML documents
+            OriginalXMLString = lists:flatten(xmerl:export([XML], xmerl_xml,
                                                            [{prolog, ""}])),
-            ?assertEqual(OriginalXMLString, XMLString);
+            OriginalXMLString2 = re:replace(OriginalXMLString, "\\n", "",
+                                            [{return, list}, global]),
+            OriginalXMLString3 = re:replace(OriginalXMLString2, " ", "",
+                                            [{return, list}, global]),
+            XMLString2 = re:replace(XMLString, " ", "", [{return, list}, global]),
+            ?assertEqual(OriginalXMLString3, XMLString2);
         false ->
             ok
     end,
@@ -105,11 +144,13 @@ encode(Filename, CompareWithOriginal) ->
 %% Fixtures --------------------------------------------------------------------
 
 setup_11() ->
+    application:load(of_config),
     application:set_env(of_config, of_config_schema, "of-config-1.1.xsd"),
     application:set_env(of_config, version, '1.1'),
     setup().
 
 setup_111() ->
+    application:load(of_config),
     application:set_env(of_config, of_config_schema, "of-config-1.1.1.xsd"),
     application:set_env(of_config, version, '1.1.1'),
     setup().

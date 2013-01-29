@@ -107,8 +107,8 @@
             <wildcards>
                 <type>udp-dest</type>
             </wildcards>
-            <metadata-match>AEF134F56EDB</metadata-match>
-            <metadata-write>AEF134F56EDB</metadata-write>
+            <metadata-match>0000AEF134F56EDB</metadata-match>
+            <metadata-write>0000AEF134F56EDB</metadata-write>
         </flow-table>
     </resources>
     <logical-switches>

@@ -169,8 +169,10 @@ transform_xml(#xmlElement{name = 'flow-table', content = C}) ->
                 write_setfields = transform_xml(get_child('write-setfields', C)),
                 apply_setfields = transform_xml(get_child('apply-setfields', C)),
                 wildcards = transform_xml(get_child('wildcards', C)),
-                metadata_match = get_from_child(string, 'metadata-match', C),
-                metadata_write = get_from_child(string, 'metadata-write', C)};
+                metadata_match = hex_to_bin(get_from_child(string,
+                                                           'metadata-match', C)),
+                metadata_write = hex_to_bin(get_from_child(string,
+                                                           'metadata-write', C))};
 transform_xml(#xmlElement{name = 'next-tables', content = C}) ->
     get_all_children(integer, C);
 transform_xml(#xmlElement{name = 'instructions', content = C}) ->
@@ -340,3 +342,7 @@ get_operation(Attrs) ->
         false ->
             undefined
     end.
+
+hex_to_bin(String) ->
+    Int = list_to_integer(String, 16),
+    <<Int:64>>.

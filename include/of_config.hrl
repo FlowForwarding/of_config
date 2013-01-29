@@ -241,21 +241,21 @@
                  | '1.3.1'.
 
 -record(controller_state, {
-          connection_state   = up    :: connection_state(),
-          current_version    = '1.3' :: version(),
-          supported_versions = []    :: [version()]
+          connection_state        :: connection_state(),
+          current_version         :: version(),
+          supported_versions = [] :: [version()]
          }).
 
 -record(controller, {
           operation :: operation(),
           id :: id(),
-          role = equal :: role(),
+          role :: role(),
           ip_address :: ip_address(),
-          port = 6633 :: integer(),
+          port :: integer(),
           local_ip_address :: ip_address(),
           local_port :: integer(),
-          protocol = tcp :: controller_protocol(),
-          state = #controller_state{} :: #controller_state{}
+          protocol :: controller_protocol(),
+          state :: #controller_state{}
          }).
 
 %% 7.4 Logical Switch Capabilities ---------------------------------------------
@@ -301,9 +301,9 @@
                           | goto_table.
 
 -record(capabilities, {
-          max_buffered_packets    = 0     :: integer(),
-          max_tables              = 255   :: integer(),
-          max_ports               = 65536 :: integer(),
+          max_buffered_packets     :: integer(),
+          max_tables    :: integer(),
+          max_ports  :: integer(),
           flow_statistics         = false :: boolean(),
           table_statistics        = false :: boolean(),
           port_statistics         = false :: boolean(),
@@ -323,21 +323,15 @@
 -type lost_connection_behaviour() :: fail_secure_mode
                                    | fail_standalone_mode.
 
--type resource_name() :: port
-                       | queue
-                       | certificate
-                       | flow_table.
-
 -record(logical_switch, {
           id :: id(),
-          capabilities = #capabilities{} :: #capabilities{},
+          capabilities :: #capabilities{},
           datapath_id :: binary(),
-          enabled = true :: boolean(),
-          check_controller_certificate = false :: boolean(),
-          lost_connection_behavior =
-              fail_secure_mode :: lost_connection_behaviour(),
+          enabled :: boolean(),
+          check_controller_certificate :: boolean(),
+          lost_connection_behavior :: lost_connection_behaviour(),
           controllers = [] :: [#controller{}],
-          resources = [] :: [tuple(resource_name(), string())]
+          resources :: [resource()]
          }).
 
 %% 7.2 OpenFlow Configuration Point --------------------------------------------

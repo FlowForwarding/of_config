@@ -127,13 +127,18 @@ simple_form(#port{resource_id = ResourceId,
              element('tunnel', integer, Tunnel)]);
 simple_form(#queue_properties{min_rate = MinRate,
                               max_rate = MaxRate,
-                              experimenters = Exps
+                              experimenters = Experimenters
                              }) ->
     [element('min-rate', integer, MinRate),
      element('max-rate', integer, MaxRate)]
-        ++ lists:map(fun(E) ->
-                             element('experimenter', integer, E)
-                     end, Exps);
+        ++ case Experimenters of
+               undefined ->
+                   [];
+               _ ->
+                   lists:map(fun(E) ->
+                                     element('experimenter', integer, E)
+                             end, Experimenters)
+           end;
 simple_form(#queue{resource_id = ResourceId,
                    id = Id,
                    port = Port,
@@ -238,16 +243,20 @@ simple_form(#logical_switch{id = Id,
              element('check-controller-certificate', atom, CCC),
              element('lost-connection-behavior', atom, LCB),
              element('controllers', nested_list, Controllers),
-             {'resources', only_valid_elements(
-                             lists:map(fun({port, Value}) ->
-                                               {'port', [Value]};
-                                          ({queue, Value}) ->
-                                               {'queue', [Value]};
-                                          ({certificate, Value}) ->
-                                               {'certificate', [Value]};
-                                          ({flow_table, Value}) ->
-                                               {'flow-table', [Value]}
-                                       end, Resources))}
+             case Resources of
+                 undefined ->
+                     undefined;
+                 _ ->
+                     {'resources', lists:map(fun({port, Value}) ->
+                                                     {'port', [Value]};
+                                                ({queue, Value}) ->
+                                                     {'queue', [Value]};
+                                                ({certificate, Value}) ->
+                                                     {'certificate', [Value]};
+                                                ({flow_table, Value}) ->
+                                                     {'flow-table', [Value]}
+                                             end, Resources)}
+             end
             ]);
 simple_form(#controller_state{connection_state = State,
                               current_version = Version,

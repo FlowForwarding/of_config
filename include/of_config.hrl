@@ -63,18 +63,18 @@
                           | mpls_tc.
 
 -record(flow_table, {
-          resource_id :: id(),
-          max_entries :: integer(),
-          next_tables = [] :: [integer()],
-          instructions = [] :: [instruction_type()],
-          matches = [] :: [match_field_type()],
-          write_actions = [] :: [action_type()],
-          apply_actions = [] :: [action_type()],
-          write_setfields = [] :: [match_field_type()],
-          apply_setfields = [] :: [match_field_type()],
-          wildcards = [] :: [match_field_type()],
-          metadata_match :: binary(),
-          metadata_write :: binary()
+          resource_id     :: id(),
+          max_entries     :: integer(),
+          next_tables     :: [integer()],
+          instructions    :: [instruction_type()],
+          matches         :: [match_field_type()],
+          write_actions   :: [action_type()],
+          apply_actions   :: [action_type()],
+          write_setfields :: [match_field_type()],
+          apply_setfields :: [match_field_type()],
+          wildcards       :: [match_field_type()],
+          metadata_match  :: binary(),
+          metadata_write  :: binary()
          }).
 
 %% 7.10 External Certificate / 7.11 Owned Certificate --------------------------
@@ -83,7 +83,7 @@
                           | owned.
 
 -record(private_key_rsa, {
-          modulus :: string(),
+          modulus  :: string(),
           exponent :: string()
          }).
 
@@ -101,9 +101,9 @@
                      | #private_key_dsa{}.
 
 -record(certificate, {
-          operation :: operation(),
+          operation   :: operation(),
           resource_id :: id(),
-          type :: certificate_type(),
+          type        :: certificate_type(),
           certificate :: binary(),
           private_key :: private_key() | undefined
          }).
@@ -130,10 +130,10 @@
                | asymmetric.
 
 -record(features, {
-          rate :: rate(),
-          auto_negotiate = true :: boolean(),
-          medium :: medium(),
-          pause :: pause()
+          rate           :: rate(),
+          auto_negotiate :: boolean(),
+          medium         :: medium(),
+          pause          :: pause()
          }).
 
 %% 7.7 OpenFlow Resource -------------------------------------------------------
@@ -142,46 +142,46 @@
                     | down.
 
 -record(port_configuration, {
-          admin_state = up :: oper_state(),
-          no_receive = false :: boolean(),
-          no_forward = false :: boolean(),
-          no_packet_in = false :: boolean()
+          admin_state  :: oper_state(),
+          no_receive   :: boolean(),
+          no_forward   :: boolean(),
+          no_packet_in :: boolean()
          }).
 
 -record(port_state, {
-          oper_state = up :: oper_state(),
-          blocked = false :: boolean(),
-          live = true :: boolean()
+          oper_state :: oper_state(),
+          blocked    :: boolean(),
+          live       :: boolean()
          }).
 
 -record(port_features, {
-          current :: #features{},
-          advertised :: #features{},
-          supported :: #features{},
+          current         :: #features{},
+          advertised      :: #features{},
+          supported       :: #features{},
           advertised_peer :: #features{}
          }).
 
 -record(ip_in_gre_tunnel, {
-          local_endpoint_address :: ip_address(),
+          local_endpoint_address  :: ip_address(),
           remote_endpoint_address :: ip_address(),
-          checksum_present :: boolean(),
-          key_present :: boolean(),
-          key :: integer(),
+          checksum_present        :: boolean(),
+          key_present             :: boolean(),
+          key                     :: integer(),
           sequence_number_present :: boolean()
          }).
 
 -record(vxlan_tunnel, {
-          vni_valid :: boolean(),
-          vni :: integer(),
+          vni_valid           :: boolean(),
+          vni                 :: integer(),
           vni_multicast_group :: binary(),
-          udp_source_port :: integer(),
-          udp_dest_port :: integer(),
-          udp_checksum :: boolean()
+          udp_source_port     :: integer(),
+          udp_dest_port       :: integer(),
+          udp_checksum        :: boolean()
          }).
 
 -record(nvgre_tunnel, {
-          tni :: integer(),
-          tni_user :: integer(),
+          tni                 :: integer(),
+          tni_user            :: integer(),
           tni_multicast_group :: binary()
          }).
 
@@ -190,34 +190,34 @@
                 | #nvgre_tunnel{}.
 
 -record(port, {
-          operation :: operation(),
-          resource_id :: id(),
-          number :: integer(),
-          name :: binary(),
-          current_rate :: integer(),
-          max_rate :: integer(),
+          operation     :: operation(),
+          resource_id   :: id(),
+          number        :: integer(),
+          name          :: binary(),
+          current_rate  :: integer(),
+          max_rate      :: integer(),
           configuration :: #port_configuration{},
-          state :: #port_state{},
-          features :: #port_features{},
-          tunnel :: tunnel() | underfined
+          state         :: #port_state{},
+          features      :: #port_features{},
+          tunnel        :: tunnel() | underfined
          }).
 
 %% 7.9 OpenFlow Queue ----------------------------------------------------------
 
 -record(queue_properties, {
-          min_rate :: integer(),
-          max_rate :: integer(),
-          experimenters = [] :: [integer()]
+          min_rate      :: integer(),
+          max_rate      :: integer(),
+          experimenters :: [integer()]
          }).
 -type queue_properties() :: #queue_properties{}.
 
 
 -record(queue, {
-          operation :: operation(),
+          operation   :: operation(),
           resource_id :: id(),
-          id :: id(),
-          port :: id(),
-          properties :: queue_properties()
+          id          :: id(),
+          port        :: id(),
+          properties  :: queue_properties()
          }).
 
 %% 7.5 OpenFlow Controller -----------------------------------------------------
@@ -241,21 +241,21 @@
                  | '1.3.1'.
 
 -record(controller_state, {
-          connection_state        :: connection_state(),
-          current_version         :: version(),
-          supported_versions = [] :: [version()]
+          connection_state   :: connection_state(),
+          current_version    :: version(),
+          supported_versions :: [version()]
          }).
 
 -record(controller, {
-          operation :: operation(),
-          id :: id(),
-          role :: role(),
-          ip_address :: ip_address(),
-          port :: integer(),
+          operation        :: operation(),
+          id               :: id(),
+          role             :: role(),
+          ip_address       :: ip_address(),
+          port             :: integer(),
           local_ip_address :: ip_address(),
-          local_port :: integer(),
-          protocol :: controller_protocol(),
-          state :: #controller_state{}
+          local_port       :: integer(),
+          protocol         :: controller_protocol(),
+          state            :: #controller_state{}
          }).
 
 %% 7.4 Logical Switch Capabilities ---------------------------------------------
@@ -301,9 +301,9 @@
                           | goto_table.
 
 -record(capabilities, {
-          max_buffered_packets     :: integer(),
-          max_tables    :: integer(),
-          max_ports  :: integer(),
+          max_buffered_packets            :: integer(),
+          max_tables                      :: integer(),
+          max_ports                       :: integer(),
           flow_statistics         = false :: boolean(),
           table_statistics        = false :: boolean(),
           port_statistics         = false :: boolean(),
@@ -324,14 +324,14 @@
                                    | fail_standalone_mode.
 
 -record(logical_switch, {
-          id :: id(),
-          capabilities :: #capabilities{},
-          datapath_id :: binary(),
-          enabled :: boolean(),
+          id                           :: id(),
+          capabilities                 :: #capabilities{},
+          datapath_id                  :: binary(),
+          enabled                      :: boolean(),
           check_controller_certificate :: boolean(),
-          lost_connection_behavior :: lost_connection_behaviour(),
-          controllers = [] :: [#controller{}],
-          resources :: [resource()]
+          lost_connection_behavior     :: lost_connection_behaviour(),
+          controllers                  :: [#controller{}],
+          resources                    :: [resource()]
          }).
 
 %% 7.2 OpenFlow Configuration Point --------------------------------------------
@@ -342,8 +342,8 @@
                                       | beep.
 
 -record(configuration_point, {
-          id :: id(),
-          uri :: string(),
+          id             :: id(),
+          uri            :: string(),
           protocol = ssh :: configuration_point_protocol()
          }).
 
@@ -355,8 +355,8 @@
                   | #flow_table{}.
 
 -record(capable_switch, {
-          id :: id(),
-          configuration_points = [] :: [#configuration_point{}],
-          resources = [] :: [resource()],
-          logical_switches = [] :: [#logical_switch{}]
+          id                   :: id(),
+          configuration_points :: [#configuration_point{}],
+          resources            :: [resource()],
+          logical_switches     :: [#logical_switch{}]
          }).

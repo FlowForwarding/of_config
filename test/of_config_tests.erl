@@ -74,7 +74,8 @@ encode_11() ->
 decode_111() ->
     decode("../test/full-config-example-1.1.1.xml"),
     decode("../test/example1-edit-config-1.1.1.xml"),
-    decode("../test/example2-edit-config-1.1.1.xml").
+    decode("../test/example2-edit-config-1.1.1.xml"),
+    decode("../test/delete-controller-1.1.1.xml").
 
 encode_111() ->
     {CapableSwitch, XML} =

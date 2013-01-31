@@ -36,9 +36,9 @@ decode(XML) ->
     {ok, OFConfigSchema} = application:get_env(of_config, of_config_schema),
     {ok, Schema} = xmerl_xsd:process_schema(filename:join([code:priv_dir(of_config),
                                                            OFConfigSchema])),
-    case catch xmerl_xsd:validate(XML, Schema) of
-        {'EXIT', Error} ->
-            Error;
+    case xmerl_xsd:validate(XML, Schema) of
+        {error, Error} = E ->
+            E;
         {_ValidElement, _GLobalState} ->
             of_config_decoder:to_capable_switch(XML)
     end.

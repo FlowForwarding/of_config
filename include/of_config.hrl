@@ -110,17 +110,17 @@
 
 %% 7.8 OpenFlow Port Feature ---------------------------------------------------
 
--type rate() :: '10mb-hd'
-              | '10mb-fd'
-              | '100mb-hd'
-              | '100mb-fd'
-              | '1gb-hd'
-              | '1gb-fd'
-              | '10gb'
-              | '40gb'
-              | '100gb'
-              | '1tb'
-              | other.
+-type rate() :: '10Mb-HD'
+              | '10Mb-FD'
+              | '100Mb-HD'
+              | '100Mb-FD'
+              | '1Gb-HD'
+              | '1Gb-FD'
+              | '10Gb'
+              | '40Gb'
+              | '100Gb'
+              | '1Tb'
+              | 'Other'.
 
 -type medium() :: copper
                 | fiber.
@@ -130,8 +130,9 @@
                | asymmetric.
 
 -record(features, {
+          operation      :: operation(),
           rate           :: rate(),
-          auto_negotiate :: boolean(),
+          auto_negotiate :: enabled | disabled,
           medium         :: medium(),
           pause          :: pause()
          }).
@@ -142,6 +143,7 @@
                     | down.
 
 -record(port_configuration, {
+          operation    :: operation(),
           admin_state  :: oper_state(),
           no_receive   :: boolean(),
           no_forward   :: boolean(),
@@ -155,6 +157,7 @@
          }).
 
 -record(port_features, {
+          operation       :: operation(),
           current         :: #features{},
           advertised      :: #features{},
           supported       :: #features{},
@@ -320,8 +323,8 @@
 
 %% 7.3 OpenFlow Logical Switch -------------------------------------------------
 
--type lost_connection_behaviour() :: fail_secure_mode
-                                   | fail_standalone_mode.
+-type lost_connection_behaviour() :: failSecureMode
+                                   | failStandaloneMode.
 
 -record(logical_switch, {
           id                           :: id(),

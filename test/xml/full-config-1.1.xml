@@ -1,7 +1,7 @@
-<capable-switch xmlns="urn:onf:params:xml:ns:onf:of12:config"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-                xsi:schemaLocation="urn:onf:params:xml:ns:onf:of12:config of-config-1.1.1.xsd">
+<capable-switch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="urn:onf:params:xml:ns:onf:of12:config ../../priv/of-config-1.1.xsd"
+  xmlns="urn:onf:params:xml:ns:onf:of12:config"
+  xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
   <id>CapableSwitch0</id>
   <configuration-points>
     <configuration-point>
@@ -31,25 +31,25 @@
       <features>
         <current>
           <rate>10Mb-FD</rate>
-          <auto-negotiate>true</auto-negotiate>
+          <auto-negotiate>enabled</auto-negotiate>
           <medium>copper</medium>
           <pause>symmetric</pause>
         </current>
         <advertised>
           <rate>10Mb-FD</rate>
-          <auto-negotiate>true</auto-negotiate>
+          <auto-negotiate>enabled</auto-negotiate>
           <medium>copper</medium>
           <pause>symmetric</pause>
         </advertised>
         <supported>
           <rate>10Mb-FD</rate>
-          <auto-negotiate>true</auto-negotiate>
+          <auto-negotiate>enabled</auto-negotiate>
           <medium>copper</medium>
           <pause>symmetric</pause>
         </supported>
         <advertised-peer>
           <rate>10Mb-FD</rate>
-          <auto-negotiate>true</auto-negotiate>
+          <auto-negotiate>enabled</auto-negotiate>
           <medium>copper</medium>
           <pause>symmetric</pause>
         </advertised-peer>
@@ -112,11 +112,11 @@
     </flow-table>
   </resources>
   <logical-switches>
-    <switch>
+    <logical-switch>
       <id>LogicalSwitch5</id>
       <capabilities>
         <max-buffered-packets>512</max-buffered-packets>
-        <max-tables>255</max-tables>
+        <max-tables>1024</max-tables>
         <max-ports>2048</max-ports>
         <flow-statistics>true</flow-statistics>
         <table-statistics>false</table-statistics>
@@ -141,7 +141,7 @@
           <type>write-actions</type>
         </instruction-types>
       </capabilities>
-      <datapath-id>AA:00:11:22:33:44:55:66</datapath-id>
+      <datapath-id>datapath-id0</datapath-id>
       <enabled>true</enabled>
       <check-controller-certificate>false</check-controller-certificate>
       <lost-connection-behavior>failSecureMode</lost-connection-behavior>
@@ -149,7 +149,7 @@
         <controller>
           <id>Controller3</id>
           <role>master</role>
-          <ip-address>192.168.2.1</ip-address>
+          <ip-address>192.168.2.1/26</ip-address>
           <port>6633</port>
           <local-ip-address>192.168.2.129</local-ip-address>
           <local-port>32768</local-port>
@@ -158,9 +158,8 @@
             <connection-state>up</connection-state>
             <current-version>1.2</current-version>
             <supported-versions>
-              <version>1.0</version>
               <version>1.2</version>
-              <version>1.3</version>
+              <version>1.1</version>
             </supported-versions>
           </state>
         </controller>
@@ -174,6 +173,6 @@
         <flow-table>1</flow-table>
         <flow-table>2</flow-table>
       </resources>
-    </switch>
+    </logical-switch>
   </logical-switches>
 </capable-switch>

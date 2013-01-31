@@ -25,6 +25,8 @@
 -include_lib("xmerl/include/xmerl.hrl").
 -include_lib("eunit/include/eunit.hrl").
 
+-define(XML_PATH(XML), "../test/xml/" ++ XML).
+
 %% Tests -----------------------------------------------------------------------
 
 parser_11_test_() ->
@@ -32,17 +34,26 @@ parser_11_test_() ->
      fun setup_11/0,
      fun teardown/1,
      [
-      {"Decoding full-config-example-1.1.xml to #capable_switch{} "
-       "with OF-Config 1.1 XSD",
-       fun decode_11/0},
-      {"Encoding minimal #capable_switch{} record "
-       "to XML with OF-Config 1.1 XSD",
-       fun encode_minimal_11/0},
-      {"Encoding full #capable_switch{} to XML with OF-Config 1.1 XSD",
-       fun encode_11/0},
-      {"Encoding of partial #capable_switch{} record returned by get-config "
-       "to XML with OF-Config 1.1 XSD",
-       fun encode_get_config_11/0}
+      {"Decoding/encoding full-config-1.1.xml with OF-Config 1.1 XSD",
+       fun full_config_11/0},
+      {"Decoding/encoding example1-edit-config-1.1.xml with OF-Config 1.1 XSD",
+       fun example1_edit_config_11/0},
+      {"decoding/encoding example2-edit-config-1.1.xml with OF-Config 1.1 XSD",
+       fun example2_edit_config_11/0},
+      {"Decoding/encoding example3-edit-config-1.1.xml with OF-Config 1.1 XSD",
+       fun example3_edit_config_11/0},
+      {"Decoding/encoding get-config-1.1.xml with OF-Config 1.1 XSD",
+       fun get_config_11/0},
+      {"Decoding/encoding delete-controller-1.1.xml with OF-Config 1.1 XSD",
+       fun delete_controller_11/0},
+      {"Decoding/encoding delete-certificate-1.1.xml with OF-Config 1.1 XSD",
+       fun delete_certificate_11/0},
+      {"Decoding/encoding set-queue-1.1.xml with OF-Config 1.1 XSD",
+       fun set_queue_11/0},
+      {"Decoding/encoding set-port-1.1.xml with OF-Config 1.1 XSD",
+       fun set_port_11/0},
+      {"Encoding of_config_fixtures:get_config/0 fixture with OF-Config 1.1 XSD",
+       fun encode_fixture1_11/0}
      ]}.
 
 parser_111_test_() ->
@@ -50,76 +61,71 @@ parser_111_test_() ->
      fun setup_111/0,
      fun teardown/1,
      [
-      {"Decoding example XML files to #capable_switch{} "
-       "with OF-Config 1.1.1 XSD",
-       fun decode_111/0},
-      {"Encoding minimal #capable_switch{} record"
-       "to XML with OF-Config 1.1.1 XSD",
-       fun encode_minimal_111/0},
-      {"Encoding full #capable_switch{} to XML with OF-Config 1.1.1 XSD",
-       fun encode_111/0},
-      {"Encoding of partial #capable_switch{} record returned by get-config "
-       "to XML with OF-Config 1.1.1 XSD",
-       fun encode_get_config_111/0}
      ]}.
 
-decode_11() ->
-    decode("../test/full-config-example-1.1.xml").
+%% OF-Config 1.1 ---------------------------------------------------------------
 
-encode_11() ->
-    {CapableSwitch, XML} =
-        get_record_from_xml("../test/full-config-example-1.1.xml"),
+full_config_11() ->
+    {CapableSwitch, XML} = decode(?XML_PATH("full-config-1.1.xml")),
     encode(CapableSwitch, XML).
 
-decode_111() ->
-    decode("../test/full-config-example-1.1.1.xml"),
-    decode("../test/example1-edit-config-1.1.1.xml"),
-    decode("../test/example2-edit-config-1.1.1.xml"),
-    decode("../test/delete-controller-1.1.1.xml").
-
-encode_111() ->
-    {CapableSwitch, XML} =
-        get_record_from_xml("../test/full-config-example-1.1.1.xml"),
+example1_edit_config_11() ->
+    {CapableSwitch, XML} = decode(?XML_PATH("example1-edit-config-1.1.xml")),
     encode(CapableSwitch, XML).
 
-encode_minimal_11() ->
-    {CapableSwitch, XML} =
-        get_record_from_xml("../test/get-config-1.1.xml"),
+example2_edit_config_11() ->
+    {CapableSwitch, XML} = decode(?XML_PATH("example2-edit-config-1.1.xml")),
     encode(CapableSwitch, XML).
 
-encode_minimal_111() ->
-    {CapableSwitch, XML} =
-        get_record_from_xml("../test/get-config-1.1.1.xml"),
+example3_edit_config_11() ->
+    {CapableSwitch, XML} = decode(?XML_PATH("example3-edit-config-1.1.xml")),
     encode(CapableSwitch, XML).
 
-encode_get_config_11() ->
+get_config_11() ->
+    {CapableSwitch, XML} = decode(?XML_PATH("get-config-1.1.xml")),
+    encode(CapableSwitch, XML).
+
+delete_controller_11() ->
+    {CapableSwitch, XML} = decode(?XML_PATH("delete-controller-1.1.xml")),
+    encode(CapableSwitch, XML, [{original, "operation=\"delete\""}]).
+
+delete_certificate_11() ->
+    {CapableSwitch, XML} = decode(?XML_PATH("delete-certificate-1.1.xml")),
+    encode(CapableSwitch, XML, [{original, "operation=\"delete\""}]).
+
+set_queue_11() ->
+    {CapableSwitch, XML} = decode(?XML_PATH("set-queue-1.1.xml")),
+    encode(CapableSwitch, XML, [{original, "operation=\"replace\""}]).
+
+set_port_11() ->
+    {CapableSwitch, XML} = decode(?XML_PATH("set-port-1.1.xml")),
+    encode(CapableSwitch, XML, [{original, "operation=\"replace\""},
+                                {original, "operation=\"delete\""}]).
+
+encode_fixture1_11() ->
     CapableSwitch = of_config_fixtures:get_config(),
     encode(CapableSwitch).
 
-encode_get_config_111() ->
-    CapableSwitch = of_config_fixtures:get_config(),
-    encode(CapableSwitch).
+%% OF-Config 1.1.1 -------------------------------------------------------------
 
 %% Helper functions ------------------------------------------------------------
 
-get_record_from_xml(Filename) ->
+decode(Filename) ->
     {XML, _Rest} = xmerl_scan:file(Filename),
     CapableSwitchRecord = of_config:decode(XML),
     ?assertEqual(true, is_record(CapableSwitchRecord, capable_switch)),
     {CapableSwitchRecord, XML}.
 
-decode(Filename) ->
-    {XML, _Rest} = xmerl_scan:file(Filename),
-    Res = of_config:decode(XML),
-    ?assertEqual(true, is_record(Res, capable_switch)).
-
 encode(CapableSwitch) ->
-    encode(CapableSwitch, xml, false).
+    encode(CapableSwitch, xml, false, [nodiff]).
 
 encode(CapableSwitch, XML) ->
-    encode(CapableSwitch, XML, true).
+    encode(CapableSwitch, XML, true, [nodiff]).
 
-encode(CapableSwitchRecord1, XML, CompareWithOriginal) ->
+encode(CapableSwitch, XML, Diff) ->
+    encode(CapableSwitch, XML, true, Diff).
+
+encode(CapableSwitchRecord1, XML, CompareWithOriginal, Diffs) ->
     SimpleForm = of_config:encode(CapableSwitchRecord1),
     DeepList = xmerl:export_simple([SimpleForm], xmerl_xml, [{prolog, ""}]),
     XMLString = lists:flatten(DeepList),
@@ -132,15 +138,81 @@ encode(CapableSwitchRecord1, XML, CompareWithOriginal) ->
                                             [{return, list}, global]),
             OriginalXMLString3 = re:replace(OriginalXMLString2, " ", "",
                                             [{return, list}, global]),
-            XMLString2 = re:replace(XMLString, " ", "", [{return, list}, global]),
-            ?assertEqual(OriginalXMLString3, XMLString2);
+            XMLString2 = re:replace(XMLString, " ", "",
+                                    [{return, list}, global]),
+            {OriginalFinalXML, ResultFinalXML} =
+                lists:foldl(
+                  fun({original, ReplaceString}, {Original, Result}) ->
+                          Original2 = re:replace(Original,
+                                                 ReplaceString, "",
+                                                 [{return, list}, global]),
+                          {Original2, Result};
+                     ({result, ReplaceString}, {Original, Result}) ->
+                          Result2 = re:replace(Result,
+                                               ReplaceString, "",
+                                               [{return, list}, global]),
+                          {Original, Result2};
+                     (nodiff, {Original, Result}) ->
+                          {Original, Result}
+                  end, {OriginalXMLString3, XMLString2}, Diffs),
+            ?assertEqual(OriginalFinalXML, ResultFinalXML);
         false ->
             ok
     end,
     {XML2, _Rest} = xmerl_scan:string(XMLString),
     CapableSwitchRecord2 = of_config:decode(XML2),
     ?assertEqual(true, is_record(CapableSwitchRecord2, capable_switch)),
-    ?assertEqual(CapableSwitchRecord1, CapableSwitchRecord2).
+    ?assertEqual(reset_operations(CapableSwitchRecord1),
+                 reset_operations(CapableSwitchRecord2)).
+
+reset_operations(Switch) ->
+    reset_resources(reset_controllers(Switch)).
+
+reset_controllers(#capable_switch{logical_switches = undefined} = CS) ->
+    CS;
+reset_controllers(#capable_switch{logical_switches = LS} = CS) ->
+    CS#capable_switch{logical_switches = [reset_controllers(L) || L <- LS]};
+reset_controllers(#logical_switch{controllers = undefined} = L) ->
+    L;
+reset_controllers(#logical_switch{controllers = CS} = L) ->
+    L#logical_switch{controllers = [reset_controllers(C) || C <- CS]};
+reset_controllers(#controller{} = C) ->
+    C#controller{operation = undefined}.
+
+reset_resources(#capable_switch{resources = undefined} = Switch) ->
+    Switch;
+reset_resources(#capable_switch{resources = Resources} = Switch) ->
+    Switch#capable_switch{resources = [reset_resources(R) || R <- Resources]};
+reset_resources(undefined) ->
+    undefined;
+reset_resources(#port{configuration = C, features = F} = P) ->
+    C2 = case C of
+             undefiend ->
+                 undefiend;
+             #port_configuration{} = PC ->
+                 PC#port_configuration{operation = undefined}
+         end,
+    F2 = case F of
+             undefined ->
+                 undefined;
+             #port_features{advertised = A} = PF ->
+                 A2 = case A of
+                          undefined ->
+                              undefined;
+                          #features{} = Feats ->
+                              Feats#features{operation = undefined}
+                      end,
+                 #port_features{advertised = A2}
+         end,
+    P#port{operation = undefined,
+           configuration = C2,
+           features = F2};
+reset_resources(#queue{} = Q) ->
+    Q#queue{operation = undefined};
+reset_resources(#certificate{} = C) ->
+    C#certificate{operation = undefined};
+reset_resources(#flow_table{} = F) ->
+    F.
 
 %% Fixtures --------------------------------------------------------------------
 

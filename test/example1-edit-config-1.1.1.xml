@@ -1,22 +1,22 @@
-<capable-switch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="urn:onf:of111:config:yang ../priv/of-config-1.1.1.xsd"
- xmlns="urn:onf:of111:config:yang"
- xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-    <id>capable-switch-0</id>
-    <logical-switches>
-        <switch>
-            <id>logic-switch-1</id>
-            <datapath-id>11:11:11:11:11:11:11:11</datapath-id>
-            <enabled>true</enabled>
-            <controllers>
-                <controller>
-                    <id>controller-0</id>
-                    <role>master</role>
-                    <ip-address>192.168.2.1</ip-address>
-                    <port>6633</port>
-                    <protocol>tcp</protocol>
-                </controller>
-            </controllers>
-        </switch>
-    </logical-switches>
+<capable-switch xmlns="urn:onf:params:xml:ns:onf:of12:config"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+                xsi:schemaLocation="urn:onf:params:xml:ns:onf:of12:config of-config-1.1.1.xsd">
+  <id>capable-switch-0</id>
+  <logical-switches>
+    <switch>
+      <id>logic-switch-1</id>
+      <datapath-id>11:11:11:11:11:11:11:11</datapath-id>
+      <enabled>true</enabled>
+      <controllers>
+        <controller>
+          <id>controller-0</id>
+          <role>master</role>
+          <ip-address>192.168.2.1</ip-address>
+          <port>6633</port>
+          <protocol>tcp</protocol>
+        </controller>
+      </controllers>
+    </switch>
+  </logical-switches>
 </capable-switch>

@@ -45,19 +45,31 @@ to_simple_form(Config) ->
 %% Helper functions
 %%------------------------------------------------------------------------------
 
-when_version(Versions) ->
+get_version() ->
     {ok, Version} = application:get_env(of_config, version),
+    Version.
+
+when_version(Versions) ->
+    Version = get_version(),
     {Version, Value} = lists:keyfind(Version, 1, Versions),
     Value.
 
--spec root_attributes() -> list(tuple(atom(), string())).
-root_attributes() ->
-    [{'xmlns', "urn:onf:params:xml:ns:onf:of12:config"},
-     {'xmlns:xsi', "http://www.w3.org/2001/XMLSchema-instance"},
-     {'xmlns:ds', "http://www.w3.org/2000/09/xmldsig#"},
-     {'xsi:schemaLocation', "urn:onf:params:xml:ns:onf:of12:config "
-      ++ when_version([{'1.1', "of-config-1.1.xsd"},
-                       {'1.1.1', "of-config-1.1.1.xsd"}])}].
+-spec root_attributes('1.1' | '1.1.1') -> list(tuple(atom(), string())).
+root_attributes(Version) ->
+    case Version of
+        '1.1' ->
+            [{'xmlns:xsi', "http://www.w3.org/2001/XMLSchema-instance"},
+             {'xsi:schemaLocation', "urn:onf:params:xml:ns:onf:of12:config ../../priv/of-config-1.1.xsd"},
+             {'xmlns', "urn:onf:params:xml:ns:onf:of12:config"},
+             {'xmlns:ds', "http://www.w3.org/2000/09/xmldsig#"}];
+        '1.1.1' ->
+            [{'xmlns', "urn:onf:params:xml:ns:onf:of12:config"},
+             {'xmlns:xsi', "http://www.w3.org/2001/XMLSchema-instance"},
+             {'xmlns:ds', "http://www.w3.org/2000/09/xmldsig#"},
+             {'xsi:schemaLocation', "urn:onf:params:xml:ns:onf:of12:config "
+              ++ when_version([{'1.1', "of-config-1.1.xsd"},
+                               {'1.1.1', "of-config-1.1.1.xsd"}])}]
+    end.
 
 -spec simple_form(#capable_switch{}) -> simple_form().
 simple_form(#capable_switch{id = Id,
@@ -68,7 +80,7 @@ simple_form(#capable_switch{id = Id,
          element('configuration-points', nested_list, ConfigurationPoints),
          element('resources', nested_list, Resources),
          element('logical-switches', nested_list, LogicalSwitches)],
-    {'capable-switch', root_attributes(), only_valid_elements(L)};
+    {'capable-switch', root_attributes(get_version()), only_valid_elements(L)};
 simple_form(#configuration_point{id = Id,
                                  uri = Uri,
                                  protocol = Protocol}) ->

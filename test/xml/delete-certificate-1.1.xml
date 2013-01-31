@@ -1,0 +1,11 @@
+<capable-switch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="urn:onf:params:xml:ns:onf:of12:config ../../priv/of-config-1.1.xsd"
+  xmlns="urn:onf:params:xml:ns:onf:of12:config"
+  xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+  <id>capable-switch-0</id>
+  <resources>
+    <external-certificate operation="delete">
+      <resource-id>cert1</resource-id>
+    </external-certificate>
+  </resources>
+</capable-switch>

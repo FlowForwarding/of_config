@@ -1,7 +1,4 @@
-<capable-switch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="urn:onf:params:xml:ns:onf:of12:config ../../priv/of-config-1.1.xsd"
- xmlns="urn:onf:params:xml:ns:onf:of12:config"
- xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+<capable-switch xmlns="urn:onf:params:xml:ns:onf:of12:config">
   <id>capable-switch-0</id>
   <logical-switches>
     <logical-switch>

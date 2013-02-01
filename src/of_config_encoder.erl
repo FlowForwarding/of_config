@@ -54,14 +54,9 @@ when_version(Versions) ->
 root_attributes(Version) ->
     case Version of
         '1.1' ->
-            [{'xmlns:xsi', "http://www.w3.org/2001/XMLSchema-instance"},
-             {'xsi:schemaLocation', "urn:onf:params:xml:ns:onf:of12:config ../../priv/of-config-1.1.xsd"},
-             {'xmlns', "urn:onf:params:xml:ns:onf:of12:config"},
-             {'xmlns:ds', "http://www.w3.org/2000/09/xmldsig#"}];
+            [{'xmlns', "urn:onf:params:xml:ns:onf:of12:config"}];
         '1.1.1' ->
-            [{'xmlns', "urn:onf:of111:config:yang"},
-             {'xmlns:xsi', "http://www.w3.org/2001/XMLSchema-instance"},
-             {'xsi:schemaLocation', "urn:onf:of111:config:yang ../../priv/of-config-1.1.1.xsd"}]
+            [{'xmlns', "urn:onf:of111:config:yang"}]
     end.
 
 -spec simple_form(#capable_switch{}) -> simple_form().

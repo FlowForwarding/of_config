@@ -1,9 +1,23 @@
 {application, of_config,
- [{description, "OF-Config 1.1 Library for Erlang"},
-  {vsn, "0.1"},
+ [{description, "OF-Config Library for Erlang"},
+  {vsn, "0.2"},
   {applications, [kernel,
                   stdlib,
                   xmerl]},
-  {env, [{of_config_schema, "of-config-1.1.1.xsd"},
+  {env, [{schemas,
+          [{'1.1', [{"http://www.w3.org/2001/XMLSchema",
+                     "xmldsig-core-schema.xsd"},
+                    {"urn:ietf:params:xml:ns:yang:ietf-inet-types",
+                     "ietf-inet-types.xsd"},
+                    {"urn:onf:params:xml:ns:onf:of12:config",
+                     "of-config-1.1.xsd"}
+                   ]},
+           {'1.1.1', [{"urn:ietf:params:xml:ns:yang:ietf-inet-types",
+                       "ietf-inet-types.xsd"},
+                      {"urn:ietf:params:xml:ns:yang:ietf-yang-types",
+                       "ietf-yang-types.xsd"},
+                      {"urn:onf:of111:config:yang",
+                       "of-config-1.1.1.xsd"}
+                     ]}]},
          {version, '1.1.1'}]}
  ]}.

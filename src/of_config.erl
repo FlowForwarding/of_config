@@ -28,27 +28,38 @@
 
 -include("of_config.hrl").
 
+-type of_config_version() :: '1.1' | '1.1.1'.
+
 %%------------------------------------------------------------------------------
 %% API functions
 %%------------------------------------------------------------------------------
 
 -spec decode(xmerl_scan:xmlElement()) -> ok.
 decode(XML) ->
-    {ok, OFConfigSchema} = application:get_env(of_config, of_config_schema),
-    {ok, Schema} = xmerl_xsd:process_schema(filename:join([code:priv_dir(of_config),
-                                                           OFConfigSchema])),
-    case xmerl_xsd:validate(XML, Schema) of
-        {error, Error} = E ->
-            E;
-        {_ValidElement, _GLobalState} ->
-            of_config_decoder:to_capable_switch(XML)
+    Schemas = lists:map(fun({Namespace, Filename}) ->
+                                Path = filename:join([code:priv_dir(of_config),
+                                                      Filename]),
+                                {Namespace, Path}
+                        end, get_schemas(get_version())),
+    {ok, ProcessedSchemas} = xmerl_xsd:process_schemas(Schemas),
+    case xmerl_xsd:validate(XML, ProcessedSchemas) of
+        {error, _} = Error ->
+            Error;
+        {ValidElement, _GLobalState} ->
+            of_config_decoder:to_capable_switch(ValidElement)
     end.
 
 -spec encode(#capable_switch{}) -> of_config_encoder:simple_form().
 encode(Config) ->
     of_config_encoder:to_simple_form(Config).
 
--spec get_version() -> '1.1' | '1.1.1'.
+-spec get_version() -> of_config_version().
 get_version() ->
     {ok, Version} = application:get_env(of_config, version),
     Version.
+
+-spec get_schemas(of_config_version()) -> list(tuple(string(), string())).
+get_schemas(Version) ->
+    {ok, Schemas} = application:get_env(of_config, schemas),
+    {Version, List} = lists:keyfind(Version, 1, Schemas),
+    List.

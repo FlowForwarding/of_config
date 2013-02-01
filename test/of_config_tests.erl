@@ -223,8 +223,6 @@ encode(CapableSwitchRecord1, XML, CompareWithOriginal, Diffs) ->
     {XML2, _Rest} = xmerl_scan:string(XMLString),
     CapableSwitchRecord2 = of_config:decode(XML2),
     ?assertEqual(true, is_record(CapableSwitchRecord2, capable_switch)),
-    Op1 = reset_operations(CapableSwitchRecord1),
-    Op2 = reset_operations(CapableSwitchRecord2),
     ?assertEqual(reset_operations(CapableSwitchRecord1),
                  reset_operations(CapableSwitchRecord2)).
 
@@ -265,7 +263,7 @@ reset_resources(#port{configuration = C, features = F} = P) ->
                           #features{} = Feats ->
                               Feats#features{operation = undefined}
                       end,
-                 #port_features{advertised = A2}
+                 PF#port_features{advertised = A2}
          end,
     P#port{operation = undefined,
            configuration = C2,
@@ -281,13 +279,27 @@ reset_resources(#flow_table{} = F) ->
 
 setup_11() ->
     application:load(of_config),
-    application:set_env(of_config, of_config_schema, "of-config-1.1.xsd"),
+    application:set_env(of_config, schemas,
+                        [{'1.1', [{"http://www.w3.org/2001/XMLSchema",
+                                   "xmldsig-core-schema.xsd"},
+                                  {"urn:ietf:params:xml:ns:yang:ietf-inet-types",
+                                   "ietf-inet-types.xsd"},
+                                  {"urn:onf:params:xml:ns:onf:of12:config",
+                                   "of-config-1.1.xsd"}
+                                 ]}]),
     application:set_env(of_config, version, '1.1'),
     setup().
 
 setup_111() ->
     application:load(of_config),
-    application:set_env(of_config, of_config_schema, "of-config-1.1.1.xsd"),
+    application:set_env(of_config, schemas,
+                        [{'1.1.1', [{"urn:ietf:params:xml:ns:yang:ietf-inet-types",
+                                     "ietf-inet-types.xsd"},
+                                    {"urn:ietf:params:xml:ns:yang:ietf-yang-types",
+                                     "ietf-yang-types.xsd"},
+                                    {"urn:onf:of111:config:yang",
+                                     "of-config-1.1.1.xsd"}
+                                   ]}]),
     application:set_env(of_config, version, '1.1.1'),
     setup().
 

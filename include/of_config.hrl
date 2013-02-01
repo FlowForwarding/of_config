@@ -202,7 +202,7 @@
           configuration :: #port_configuration{},
           state         :: #port_state{},
           features      :: #port_features{},
-          tunnel        :: tunnel() | underfined
+          tunnel        :: tunnel() | undefined
          }).
 
 %% 7.9 OpenFlow Queue ----------------------------------------------------------

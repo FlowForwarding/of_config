@@ -1466,7 +1466,7 @@
                                 </xs:annotation>
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:group ref="OFPortOtherFeatureListType"/>
+                                        <xs:group minOccurs="0" ref="OFPortOtherFeatureListType"/>
                                     </xs:sequence>
                                     <xs:attribute name="operation" type="xs:string"/>
                                 </xs:complexType>

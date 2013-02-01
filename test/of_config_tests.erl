@@ -29,6 +29,18 @@
 
 %% Tests -----------------------------------------------------------------------
 
+generic_parser_test_() ->
+    {setup,
+     fun setup/0,
+     fun teardown/1,
+     [{"Decode malformed XML data", fun decode_error/0}]
+    }.
+
+decode_error() ->
+    {XML, _Rest} = xmerl_scan:file(?XML_PATH("malformed.xml")),
+    Result = of_config:decode(XML),
+    ?assertEqual(error, element(1, Result)).
+
 parser_11_test_() ->
     {setup,
      fun setup_11/0,
@@ -77,8 +89,8 @@ parser_111_test_() ->
        fun delete_certificate_111/0},
       {"Decoding/encoding set-queue-1.1.1.xml with OF-Config 1.1.1 XSD",
        fun set_queue_111/0},
-      %% {"Decoding/encoding set-port-1.1.1.xml with OF-Config 1.1.1 XSD",
-      %%  fun set_port_111/0},
+      {"Decoding/encoding set-port-1.1.1.xml with OF-Config 1.1.1 XSD",
+       fun set_port_111/0},
       {"Encoding of_config_fixtures:get_config/0 fixture with OF-Config 1.1.1 XSD",
        fun encode_fixture1_111/0}
      ]}.
@@ -278,7 +290,7 @@ reset_resources(#flow_table{} = F) ->
 %% Fixtures --------------------------------------------------------------------
 
 setup_11() ->
-    application:load(of_config),
+    setup(),
     application:set_env(of_config, schemas,
                         [{'1.1', [{"http://www.w3.org/2001/XMLSchema",
                                    "xmldsig-core-schema.xsd"},
@@ -287,11 +299,10 @@ setup_11() ->
                                   {"urn:onf:params:xml:ns:onf:of12:config",
                                    "of-config-1.1.xsd"}
                                  ]}]),
-    application:set_env(of_config, version, '1.1'),
-    setup().
+    application:set_env(of_config, version, '1.1').
 
 setup_111() ->
-    application:load(of_config),
+    setup(),
     application:set_env(of_config, schemas,
                         [{'1.1.1', [{"urn:ietf:params:xml:ns:yang:ietf-inet-types",
                                      "ietf-inet-types.xsd"},
@@ -300,8 +311,7 @@ setup_111() ->
                                     {"urn:onf:of111:config:yang",
                                      "of-config-1.1.1.xsd"}
                                    ]}]),
-    application:set_env(of_config, version, '1.1.1'),
-    setup().
+    application:set_env(of_config, version, '1.1.1').
 
 setup() ->
     error_logger:tty(true),

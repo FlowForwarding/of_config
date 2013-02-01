@@ -119,13 +119,20 @@ transform_xml(#xmlElement{name = 'queue', content = C, attributes = Attrs}) ->
            properties = transform_xml(get_child(properties, C))
           };
 transform_xml(#xmlElement{name = 'properties', content = C}) ->
+    E = lists:foldr(fun(#xmlElement{name = 'experimenter'} = E, Acc) ->
+                            [get_value(integer, E) | Acc];
+                       (_, Acc) ->
+                            Acc
+                    end, [], C),
+    Experimenters = case E of
+                        [] ->
+                            undefined;
+                        _ ->
+                            E
+                    end,
     #queue_properties{min_rate = get_from_child(integer, 'min-rate', C),
                       max_rate = get_from_child(integer, 'max-rate', C),
-                      experimenters = lists:foldr(fun(#xmlElement{name = 'experimenter'} = E, Acc) ->
-                                                          [get_value(integer, E) | Acc];
-                                                     (_, Acc) ->
-                                                          Acc
-                                                  end, [], C)};
+                      experimenters = Experimenters};
 transform_xml(#xmlElement{name = 'owned-certificate', content = C, attributes = Attrs}) ->
     #certificate{operation = get_operation(Attrs),
                  resource_id = get_from_child(string, 'resource-id', C),

@@ -29,32 +29,32 @@
 
 %% Tests -----------------------------------------------------------------------
 
-%% parser_11_test_() ->
-%%     {setup,
-%%      fun setup_11/0,
-%%      fun teardown/1,
-%%      [
-%%       {"Decoding/encoding full-config-1.1.xml with OF-Config 1.1 XSD",
-%%        fun full_config_11/0},
-%%       {"Decoding/encoding example1-edit-config-1.1.xml with OF-Config 1.1 XSD",
-%%        fun example1_edit_config_11/0},
-%%       {"Decoding/encoding example2-edit-config-1.1.xml with OF-Config 1.1 XSD",
-%%        fun example2_edit_config_11/0},
-%%       {"Decoding/encoding example3-edit-config-1.1.xml with OF-Config 1.1 XSD",
-%%        fun example3_edit_config_11/0},
-%%       {"Decoding/encoding get-config-1.1.xml with OF-Config 1.1 XSD",
-%%        fun get_config_11/0},
-%%       {"Decoding/encoding delete-controller-1.1.xml with OF-Config 1.1 XSD",
-%%        fun delete_controller_11/0},
-%%       {"Decoding/encoding delete-certificate-1.1.xml with OF-Config 1.1 XSD",
-%%        fun delete_certificate_11/0},
-%%       {"Decoding/encoding set-queue-1.1.xml with OF-Config 1.1 XSD",
-%%        fun set_queue_11/0},
-%%       {"Decoding/encoding set-port-1.1.xml with OF-Config 1.1 XSD",
-%%        fun set_port_11/0},
-%%       {"Encoding of_config_fixtures:get_config/0 fixture with OF-Config 1.1 XSD",
-%%        fun encode_fixture1_11/0}
-%%      ]}.
+parser_11_test_() ->
+    {setup,
+     fun setup_11/0,
+     fun teardown/1,
+     [
+      {"Decoding/encoding full-config-1.1.xml with OF-Config 1.1 XSD",
+       fun full_config_11/0},
+      {"Decoding/encoding example1-edit-config-1.1.xml with OF-Config 1.1 XSD",
+       fun example1_edit_config_11/0},
+      {"Decoding/encoding example2-edit-config-1.1.xml with OF-Config 1.1 XSD",
+      fun example2_edit_config_11/0},
+      {"Decoding/encoding example3-edit-config-1.1.xml with OF-Config 1.1 XSD",
+       fun example3_edit_config_11/0},
+      {"Decoding/encoding get-config-1.1.xml with OF-Config 1.1 XSD",
+       fun get_config_11/0},
+      {"Decoding/encoding delete-controller-1.1.xml with OF-Config 1.1 XSD",
+       fun delete_controller_11/0},
+      {"Decoding/encoding delete-certificate-1.1.xml with OF-Config 1.1 XSD",
+       fun delete_certificate_11/0},
+      {"Decoding/encoding set-queue-1.1.xml with OF-Config 1.1 XSD",
+       fun set_queue_11/0},
+      {"Decoding/encoding set-port-1.1.xml with OF-Config 1.1 XSD",
+       fun set_port_11/0},
+      {"Encoding of_config_fixtures:get_config_11/0 fixture with OF-Config 1.1 XSD",
+       fun encode_fixture1_11/0}
+     ]}.
 
 parser_111_test_() ->
     {setup,
@@ -90,7 +90,7 @@ full_config_11() ->
     encode(CapableSwitch, XML).
 
 example1_edit_config_11() ->
-    {CapableSwitch, XML} = decode(?XML_PATH("example1-edit-config-1.1.1.xml")),
+    {CapableSwitch, XML} = decode(?XML_PATH("example1-edit-config-1.1.xml")),
     encode(CapableSwitch, XML).
 
 example2_edit_config_11() ->
@@ -123,7 +123,7 @@ set_port_11() ->
                                 {original, "operation=\"delete\""}]).
 
 encode_fixture1_11() ->
-    CapableSwitch = of_config_fixtures:get_config(),
+    CapableSwitch = of_config_fixtures:get_config_11(),
     encode(CapableSwitch).
 
 %% OF-Config 1.1.1 -------------------------------------------------------------
@@ -166,7 +166,7 @@ set_port_111() ->
                                 {original, "operation=\"delete\""}]).
 
 encode_fixture1_111() ->
-    CapableSwitch = of_config_fixtures:get_config(),
+    CapableSwitch = of_config_fixtures:get_config_111(),
     encode(CapableSwitch).
 
 %% Helper functions ------------------------------------------------------------
@@ -223,6 +223,8 @@ encode(CapableSwitchRecord1, XML, CompareWithOriginal, Diffs) ->
     {XML2, _Rest} = xmerl_scan:string(XMLString),
     CapableSwitchRecord2 = of_config:decode(XML2),
     ?assertEqual(true, is_record(CapableSwitchRecord2, capable_switch)),
+    Op1 = reset_operations(CapableSwitchRecord1),
+    Op2 = reset_operations(CapableSwitchRecord2),
     ?assertEqual(reset_operations(CapableSwitchRecord1),
                  reset_operations(CapableSwitchRecord2)).
 

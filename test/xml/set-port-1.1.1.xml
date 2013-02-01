@@ -1,0 +1,16 @@
+<capable-switch xmlns="urn:onf:of111:config:yang"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="urn:onf:of111:config:yang ../../priv/of-config-1.1.1.xsd">
+  <id>capable-switch-0</id>
+  <resources>
+    <port>
+      <resource-id>port1</resource-id>
+      <configuration operation="replace">
+        <admin-state>up</admin-state>
+      </configuration>
+      <features>
+        <advertised operation="delete"/>
+      </features>
+    </port>
+  </resources>
+</capable-switch>

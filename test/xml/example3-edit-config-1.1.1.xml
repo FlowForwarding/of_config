@@ -1,0 +1,16 @@
+<capable-switch xmlns="urn:onf:of111:config:yang"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="urn:onf:of111:config:yang ../../priv/of-config-1.1.1.xsd">
+  <id>CapableSwitch0</id>
+  <resources>
+    <port>
+      <resource-id>LogicalSwitch0-Port1</resource-id>
+      <configuration>
+        <admin-state>down</admin-state>
+        <no-receive>false</no-receive>
+        <no-forward>false</no-forward>
+        <no-packet-in>false</no-packet-in>
+      </configuration>
+    </port>
+  </resources>
+</capable-switch>

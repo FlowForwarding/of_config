@@ -1,0 +1,10 @@
+<capable-switch xmlns="urn:onf:of111:config:yang"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="urn:onf:of111:config:yang ../../priv/of-config-1.1.1.xsd">
+  <id>capable-switch-0</id>
+  <resources>
+    <external-certificate operation="delete">
+      <resource-id>cert1</resource-id>
+    </external-certificate>
+  </resources>
+</capable-switch>

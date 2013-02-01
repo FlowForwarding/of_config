@@ -247,9 +247,16 @@ transform_xml(#xmlElement{name = 'controller', content = C, attributes = Attrs})
                 state = transform_xml(get_child_with_name('state', 'controller-state', C))
                };
 transform_xml(#xmlElement{name = 'controller-state', content = C}) ->
+    SupportedVersions =
+        case of_config:get_version() of
+            '1.1' ->
+                transform_xml(get_child('supported-versions', C));
+            '1.1.1' ->
+                get_all_children('supported-versions', atom, C)
+        end,
     #controller_state{connection_state = get_from_child(atom, 'connection-state', C),
                       current_version = get_from_child(atom, 'current-version', C),
-                      supported_versions = transform_xml(get_child('supported-versions', C))
+                      supported_versions = SupportedVersions
                      };
 transform_xml(#xmlElement{name = 'supported-versions', content = C}) ->
     get_all_children(atom, C);
@@ -287,6 +294,14 @@ transform_all_children(Children) ->
                  | atom()
                  | integer().
 
+-spec get_all_children(atom(), payload_type(), list(#xmlElement{})) -> list(any()).
+get_all_children(Name, Type, Children) ->
+    lists:foldr(fun(#xmlElement{name = N} = C, Acc) when N == Name->
+                        [get_value(Type, C) | Acc];
+                   (_, Acc) ->
+                        Acc
+                end, [], Children).
+
 -spec get_all_children(payload_type(), list(#xmlElement{})) -> list(any()).
 get_all_children(Type, Children) ->
     lists:foldr(fun(#xmlElement{} = C, Acc) ->
@@ -314,22 +329,10 @@ get_child_with_name(Name, NewName, Children) ->
     end.
 
 -spec get_value(payload_type(), #xmlElement{}) -> payload().
-get_value(string, #xmlElement{content = [#xmlText{value = Value}],
-                              attributes = [#xmlAttribute{name = operation,
-                                                          value = Operation}]}) ->
-    {list_to_atom(Operation), Value};
 get_value(string, #xmlElement{content = [#xmlText{value = Value}]}) ->
     Value;
-get_value(atom, #xmlElement{content = [#xmlText{value = Value}],
-                            attributes = [#xmlAttribute{name = operation,
-                                                        value = Operation}]}) ->
-    {list_to_atom(Operation), list_to_atom(Value)};
 get_value(atom, #xmlElement{content = [#xmlText{value = Value}]}) ->
     list_to_atom(Value);
-get_value(integer, #xmlElement{content = [#xmlText{value = Value}],
-                               attributes = [#xmlAttribute{name = operation,
-                                                           value = Operation}]}) ->
-    {list_to_atom(Operation), list_to_integer(Value)};
 get_value(integer, #xmlElement{content = [#xmlText{value = Value}]}) ->
     list_to_integer(Value);
 get_value(_, _) ->

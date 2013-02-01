@@ -23,7 +23,8 @@
 
 %% API
 -export([decode/1,
-         encode/1]).
+         encode/1,
+         get_version/0]).
 
 -include("of_config.hrl").
 
@@ -46,3 +47,8 @@ decode(XML) ->
 -spec encode(#capable_switch{}) -> of_config_encoder:simple_form().
 encode(Config) ->
     of_config_encoder:to_simple_form(Config).
+
+-spec get_version() -> '1.1' | '1.1.1'.
+get_version() ->
+    {ok, Version} = application:get_env(of_config, version),
+    Version.

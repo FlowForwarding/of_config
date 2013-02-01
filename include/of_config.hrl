@@ -120,7 +120,7 @@
               | '40Gb'
               | '100Gb'
               | '1Tb'
-              | 'Other'.
+              | 'other'.
 
 -type medium() :: copper
                 | fiber.
@@ -132,7 +132,7 @@
 -record(features, {
           operation      :: operation(),
           rate           :: rate(),
-          auto_negotiate :: enabled | disabled,
+          auto_negotiate :: boolean(),
           medium         :: medium(),
           pause          :: pause()
          }).

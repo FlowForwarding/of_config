@@ -45,12 +45,8 @@ to_simple_form(Config) ->
 %% Helper functions
 %%------------------------------------------------------------------------------
 
-get_version() ->
-    {ok, Version} = application:get_env(of_config, version),
-    Version.
-
 when_version(Versions) ->
-    Version = get_version(),
+    Version = of_config:get_version(),
     {Version, Value} = lists:keyfind(Version, 1, Versions),
     Value.
 
@@ -63,12 +59,9 @@ root_attributes(Version) ->
              {'xmlns', "urn:onf:params:xml:ns:onf:of12:config"},
              {'xmlns:ds', "http://www.w3.org/2000/09/xmldsig#"}];
         '1.1.1' ->
-            [{'xmlns', "urn:onf:params:xml:ns:onf:of12:config"},
+            [{'xmlns', "urn:onf:of111:config:yang"},
              {'xmlns:xsi', "http://www.w3.org/2001/XMLSchema-instance"},
-             {'xmlns:ds', "http://www.w3.org/2000/09/xmldsig#"},
-             {'xsi:schemaLocation', "urn:onf:params:xml:ns:onf:of12:config "
-              ++ when_version([{'1.1', "of-config-1.1.xsd"},
-                               {'1.1.1', "of-config-1.1.1.xsd"}])}]
+             {'xsi:schemaLocation', "urn:onf:of111:config:yang ../../priv/of-config-1.1.1.xsd"}]
     end.
 
 -spec simple_form(#capable_switch{}) -> simple_form().
@@ -80,7 +73,7 @@ simple_form(#capable_switch{id = Id,
          element('configuration-points', nested_list, ConfigurationPoints),
          element('resources', nested_list, Resources),
          element('logical-switches', nested_list, LogicalSwitches)],
-    {'capable-switch', root_attributes(get_version()), only_valid_elements(L)};
+    {'capable-switch', root_attributes(of_config:get_version()), only_valid_elements(L)};
 simple_form(#configuration_point{id = Id,
                                  uri = Uri,
                                  protocol = Protocol}) ->
@@ -274,9 +267,16 @@ simple_form(#controller_state{connection_state = State,
                               current_version = Version,
                               supported_versions = Supported
                              }) ->
+    SupportedVersions =
+        case of_config:get_version() of
+            '1.1' ->
+                [element('supported-versions', {'version', atom}, Supported)];
+            '1.1.1' ->
+                [element('supported-versions', atom, V) || V <- Supported]
+        end,
     [element('connection-state', atom, State),
-     element('current-version', atom, Version),
-     element('supported-versions', {'version', atom}, Supported)];
+     element('current-version', atom, Version)]
+        ++ SupportedVersions;
 simple_form(#controller{id = Id,
                         role = Role,
                         ip_address = IP,

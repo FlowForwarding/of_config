@@ -1,0 +1,13 @@
+<capable-switch xmlns="urn:onf:of111:config:yang"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="urn:onf:of111:config:yang ../../priv/of-config-1.1.1.xsd">
+  <id>capable-switch-0</id>
+  <resources>
+    <queue operation="replace">
+      <resource-id>queue1</resource-id>
+      <properties>
+        <min-rate>10</min-rate>
+      </properties>
+    </queue>
+  </resources>
+</capable-switch>

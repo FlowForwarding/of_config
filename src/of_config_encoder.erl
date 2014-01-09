@@ -59,14 +59,41 @@ root_attributes(Version) ->
             [{'xmlns', "urn:onf:of111:config:yang"}]
     end.
 
+% OF-Config 1.1.1 XML schema requires the following order:
+%    port
+%    queue
+%    owned-certitificate
+%    external-certitificate
+%    flow-table
+sort_resources(Resources) ->
+    {[], Sorted} = lists:foldl(fun(T, {Rest, Acc}) ->
+        {L, Rest2} = lists:partition(fun(E) ->
+            ET = element(1, E),
+            case T of
+                {certificate, SubType} ->
+                    ET =:= certificate andalso E#certificate.type =:= SubType;
+                Type ->
+                    ET =:= Type
+            end
+        end, Rest),
+        {Rest2, Acc ++ L}
+    end, {Resources, []}, [
+        port,
+        queue,
+        {certificate, owned},
+        {certificate, external},
+        flow_table]),
+    Sorted.
+
 -spec simple_form(#capable_switch{}) -> simple_form().
 simple_form(#capable_switch{id = Id,
                             configuration_points = ConfigurationPoints,
                             resources = Resources,
                             logical_switches = LogicalSwitches}) ->
+    SortedResources = sort_resources(Resources),
     L = [element(id, string, Id),
          element('configuration-points', nested_list, ConfigurationPoints),
-         element('resources', nested_list, Resources),
+         element('resources', nested_list, SortedResources),
          element('logical-switches', nested_list, LogicalSwitches)],
     {'capable-switch', root_attributes(of_config:get_version()), only_valid_elements(L)};
 simple_form(#configuration_point{id = Id,

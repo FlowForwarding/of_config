@@ -65,7 +65,9 @@ root_attributes(Version) ->
 %    owned-certitificate
 %    external-certitificate
 %    flow-table
-sort_resources(Resources) ->
+sort_resources(undefined) ->
+    undefined;
+sort_resources(Resources) when is_list(Resources) ->
     {[], Sorted} = lists:foldl(fun(T, {Rest, Acc}) ->
         {L, Rest2} = lists:partition(fun(E) ->
             ET = element(1, E),

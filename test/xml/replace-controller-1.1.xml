@@ -1,0 +1,17 @@
+<capable-switch xmlns="urn:onf:params:xml:ns:onf:of12:config">
+  <id>capable-switch-0</id>
+  <logical-switches>
+    <logical-switch>
+      <datapath-id>datapath0</datapath-id>
+      <controllers>
+        <controller operation="replace">
+          <id>controller-0</id>
+          <role>master</role>
+          <ip-address>127.0.0.1/24</ip-address>
+          <port>6633</port>
+          <protocol>tcp</protocol>
+        </controller>
+      </controllers>
+    </logical-switch>
+  </logical-switches>
+</capable-switch>

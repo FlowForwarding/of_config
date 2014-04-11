@@ -79,7 +79,7 @@ get_config_11() ->
                                                         enabled = true,check_controller_certificate = false,
                                                         lost_connection_behavior = failStandaloneMode,
                                                         controllers = [#controller{id = "Switch0Controller0",
-                                                                                   role = equal,ip_address = "127.0.0.1/24",port = 6633,
+                                                                                   role = equal,ip_address = "127.0.0.1",port = 6633,
                                                                                    local_ip_address = undefined,local_port = undefined,
                                                                                    protocol = tcp,state = undefined}],
                                                         resources = undefined},
@@ -88,7 +88,7 @@ get_config_11() ->
                                                         enabled = true,check_controller_certificate = false,
                                                         lost_connection_behavior = failStandaloneMode,
                                                         controllers = [#controller{id = "Switch1Controller0",
-                                                                                   role = equal,ip_address = "127.0.0.1/24",port = 6634,
+                                                                                   role = equal,ip_address = "127.0.0.1",port = 6634,
                                                                                    local_ip_address = undefined,local_port = undefined,
                                                                                    protocol = tcp,state = undefined}],
                                                         resources = undefined}]}.

@@ -370,7 +370,14 @@
                     <xs:documentation>The predefined role of the controller. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="ip-address" minOccurs="0" type="inet:ip-prefix">
+            <!-- XML Schema in the specification defines type of "ip-address" as "inet:ip-prefix". -->
+            <!-- This is in coflict with YANG model presented in the same document, that specifies the type -->
+            <!-- as "inet:ip-address". -->
+            <!-- YANG definition was chosen in this XSD file. The decision is based on the fact, -->
+            <!-- that this discrepancy has been fixed in OF-Config v1.1.1. -->
+            <!-- In the newer specification both definitions use "inet:ip-address" type. -->
+            <!-- <xs:element name="ip-address" minOccurs="0" type="inet:ip-prefix"> -->
+            <xs:element name="ip-address" minOccurs="0" type="inet:ip-address">
                 <xs:annotation>
                     <xs:documentation>The remote IP of the controller to connect
                     to.</xs:documentation>

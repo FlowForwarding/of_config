@@ -146,7 +146,7 @@
         <controller>
           <id>Controller3</id>
           <role>master</role>
-          <ip-address>192.168.2.1/26</ip-address>
+          <ip-address>192.168.2.1</ip-address>
           <port>6633</port>
           <local-ip-address>192.168.2.129</local-ip-address>
           <local-port>32768</local-port>

@@ -9,7 +9,7 @@
         <controller>
           <id>controller-0</id>
           <role>master</role>
-          <ip-address>192.168.2.1/24</ip-address>
+          <ip-address>192.168.2.1</ip-address>
           <port>6633</port>
           <protocol>tcp</protocol>
         </controller>

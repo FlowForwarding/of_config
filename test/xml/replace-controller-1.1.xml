@@ -2,12 +2,14 @@
   <id>capable-switch-0</id>
   <logical-switches>
     <logical-switch>
-      <id>logic-switch-1</id>
-      <datapath-id>11:11:11:11:11:11:11:11</datapath-id>
+      <datapath-id>datapath0</datapath-id>
       <controllers>
-        <controller>
+        <controller operation="replace">
           <id>controller-0</id>
-          <ip-address>10.0.0.10</ip-address>
+          <role>master</role>
+          <ip-address>127.0.0.1</ip-address>
+          <port>6633</port>
+          <protocol>tcp</protocol>
         </controller>
       </controllers>
     </logical-switch>

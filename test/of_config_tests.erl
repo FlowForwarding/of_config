@@ -58,6 +58,8 @@ parser_11_test_() ->
        fun get_config_11/0},
       {"Decoding/encoding delete-controller-1.1.xml with OF-Config 1.1 XSD",
        fun delete_controller_11/0},
+      {"Decoding/encoding replace-controller-1.1.xml with OF-Config 1.1 XSD",
+       fun replace_controller_11/0},
       {"Decoding/encoding delete-certificate-1.1.xml with OF-Config 1.1 XSD",
        fun delete_certificate_11/0},
       {"Decoding/encoding set-queue-1.1.xml with OF-Config 1.1 XSD",
@@ -85,6 +87,8 @@ parser_111_test_() ->
        fun get_config_111/0},
       {"Decoding/encoding delete-controller-1.1.1.xml with OF-Config 1.1.1 XSD",
        fun delete_controller_111/0},
+      {"Decoding/encoding replace-controller-1.1.1.xml with OF-Config 1.1.1 XSD",
+       fun replace_controller_111/0},
       {"Decoding/encoding delete-certificate-1.1.1.xml with OF-Config 1.1.1 XSD",
        fun delete_certificate_111/0},
       {"Decoding/encoding set-queue-1.1.1.xml with OF-Config 1.1.1 XSD",
@@ -120,6 +124,10 @@ get_config_11() ->
 delete_controller_11() ->
     {CapableSwitch, XML} = decode(?XML_PATH("delete-controller-1.1.xml")),
     encode(CapableSwitch, XML, [{original, "operation=\"delete\""}]).
+
+replace_controller_11() ->
+    {CapableSwitch, XML} = decode(?XML_PATH("replace-controller-1.1.xml")),
+    encode(CapableSwitch, XML, [{original, "operation=\"replace\""}]).
 
 delete_certificate_11() ->
     {CapableSwitch, XML} = decode(?XML_PATH("delete-certificate-1.1.xml")),
@@ -163,6 +171,10 @@ get_config_111() ->
 delete_controller_111() ->
     {CapableSwitch, XML} = decode(?XML_PATH("delete-controller-1.1.1.xml")),
     encode(CapableSwitch, XML, [{original, "operation=\"delete\""}]).
+
+replace_controller_111() ->
+    {CapableSwitch, XML} = decode(?XML_PATH("replace-controller-1.1.1.xml")),
+    encode(CapableSwitch, XML, [{original, "operation=\"replace\""}]).
 
 delete_certificate_111() ->
     {CapableSwitch, XML} = decode(?XML_PATH("delete-certificate-1.1.1.xml")),

@@ -1,0 +1,17 @@
+<capable-switch xmlns="urn:onf:of111:config:yang">
+  <id>capable-switch-0</id>
+  <logical-switches>
+    <switch>
+      <id>switch0</id>
+      <controllers>
+        <controller operation="replace">
+          <id>controller-0</id>
+          <role>master</role>
+          <ip-address>127.0.0.1</ip-address>
+          <port>6633</port>
+          <protocol>tcp</protocol>
+        </controller>
+      </controllers>
+    </switch>
+  </logical-switches>
+</capable-switch>

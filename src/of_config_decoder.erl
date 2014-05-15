@@ -115,7 +115,7 @@ transform_xml(#xmlElement{name = 'queue', content = C, attributes = Attrs}) ->
     #queue{operation = get_operation(Attrs),
            resource_id = get_from_child(string, 'resource-id', C),
            id = get_from_child(integer, 'id', C),
-           port = get_from_child(integer, 'port', C),
+           port = get_from_child(string, 'port', C),
            properties = transform_xml(get_child(properties, C))
           };
 transform_xml(#xmlElement{name = 'properties', content = C}) ->

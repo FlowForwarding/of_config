@@ -175,7 +175,7 @@ simple_form(#queue{resource_id = ResourceId,
     element('queue', list,
             [element('resource-id', string, ResourceId),
              element('id', integer, Id),
-             element('port', integer, Port),
+             element('port', string, Port),
              element('properties', nested, Properties)]);
 %% TODO: Add DSAKeyValue
 simple_form(#private_key_rsa{modulus = Modulus,

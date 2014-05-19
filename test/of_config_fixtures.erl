@@ -73,7 +73,7 @@ get_config_11() ->
                                                                  supported = undefined,advertised_peer = undefined},
                                        tunnel = undefined},
                                  #queue{resource_id = "LogicalSwitch1-Port1Queue1",
-                                        port = 1, properties = #queue_properties{min_rate = 100}}],
+                                        port = "LogicalSwitch0-Port1", properties = #queue_properties{min_rate = 100}}],
                     logical_switches = [#logical_switch{id = "LogicalSwitch0",
                                                         capabilities = undefined,datapath_id = "AA:00:11:22:33:44:55:66",
                                                         enabled = true,check_controller_certificate = false,

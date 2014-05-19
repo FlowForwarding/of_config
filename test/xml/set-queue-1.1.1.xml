@@ -3,6 +3,7 @@
   <resources>
     <queue operation="replace">
       <resource-id>queue1</resource-id>
+      <port>port1</port>
       <properties>
         <min-rate>10</min-rate>
       </properties>

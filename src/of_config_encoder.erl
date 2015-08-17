@@ -50,7 +50,7 @@ when_version(Versions) ->
     {Version, Value} = lists:keyfind(Version, 1, Versions),
     Value.
 
--spec root_attributes('1.1' | '1.1.1') -> list(tuple(atom(), string())).
+-spec root_attributes('1.1' | '1.1.1') -> list({ atom(), string() }).
 root_attributes(Version) ->
     case Version of
         '1.1' ->

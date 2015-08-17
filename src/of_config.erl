@@ -58,7 +58,7 @@ get_version() ->
     {ok, Version} = application:get_env(of_config, version),
     Version.
 
--spec get_schemas(of_config_version()) -> list(tuple(string(), string())).
+-spec get_schemas(of_config_version()) -> list({ string(), string() }).
 get_schemas(Version) ->
     {ok, Schemas} = application:get_env(of_config, schemas),
     {Version, List} = lists:keyfind(Version, 1, Schemas),
